@@ -15,10 +15,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Function;
 
 public class GUIView extends BaseView<ImageIcon> {
 
@@ -33,23 +29,6 @@ public class GUIView extends BaseView<ImageIcon> {
     @Override
     public ImageIcon getResource() {
       return icon;
-    }
-  }
-
-  private static class SwingChoiceWrapper<T extends UserChoice> {
-    private T object;
-
-    SwingChoiceWrapper(T object) {
-      this.object = object;
-    }
-
-    public T userChoice() {
-      return object;
-    }
-
-    @Override
-    public String toString() {
-      return object.textValue();
     }
   }
 
@@ -151,14 +130,9 @@ public class GUIView extends BaseView<ImageIcon> {
   @Override
   public <T extends UserChoice> T askUser(String title, String question, T... possibilities) {
     T result = possibilities.length > 0 ? possibilities[0] : null;
-
     if (possibilities.length > 1) {
-      SwingChoiceWrapper<T>[] selectionValues = Arrays.stream(possibilities).map(SwingChoiceWrapper::new).toArray(SwingChoiceWrapper[]::new);
-
-      Object chosen = JOptionPane.showInputDialog(null,
-          question, title, JOptionPane.QUESTION_MESSAGE, null, selectionValues, result);
-
-      result = chosen != null ? ((SwingChoiceWrapper<T>)chosen).userChoice() : null;
+      result = (T) JOptionPane.showInputDialog(null,
+          question, title, JOptionPane.QUESTION_MESSAGE, null, possibilities, result);
     }
     return result;
   }

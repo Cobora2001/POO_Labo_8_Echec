@@ -4,6 +4,8 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
+
+
 class ChessSquare extends JButton {
   //coordinates
   final int x;

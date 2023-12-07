@@ -76,7 +76,6 @@ public class ConsoleView extends BaseView<String> {
       int i = 0;
       for (T choice : possibilities) {
         System.out.println(i + ". " + choice.textValue());
-        ++i;
       }
 
       int userChoice;
@@ -86,7 +85,7 @@ public class ConsoleView extends BaseView<String> {
 
         try {
           userChoice = Integer.parseInt(scanner.nextLine());
-          if (userChoice >= 0 && userChoice < possibilities.length)
+          if (userChoice > 0 && userChoice < possibilities.length)
             result = possibilities[userChoice];
           else
             userChoice = -1;
