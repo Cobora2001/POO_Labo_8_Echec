@@ -2,19 +2,20 @@ package engine.Pieces;
 
 import chess.PieceType;
 import chess.PlayerColor;
+import engine.Player;
 
 public abstract class Piece {
     private PieceType type;
-    private PlayerColor color;
     private int x;
     private int y;
+    private final Player player;
 
 
-    public Piece(PieceType type, PlayerColor color, int x, int y) {
+    public Piece(PieceType type, int x, int y, Player player) {
         this.type = type;
-        this.color = color;
         this.x = x;
         this.y = y;
+        this.player = player;
     }
 
     public boolean move(int x, int y) {
@@ -31,7 +32,7 @@ public abstract class Piece {
     }
 
     public PlayerColor getColor() {
-        return color;
+        return getPlayer().getColor();
     }
 
     public int getX() {
@@ -43,4 +44,12 @@ public abstract class Piece {
     }
 
     public abstract boolean internalRule(int x, int y);
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void changeType(PieceType type) {
+        this.type = type;
+    }
 }

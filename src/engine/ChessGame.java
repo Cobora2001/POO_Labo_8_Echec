@@ -2,15 +2,14 @@ package engine;
 
 import chess.ChessController;
 import chess.ChessView;
-import chess.PlayerColor;
 import engine.Pieces.King;
 import engine.Pieces.Piece;
+import engine.Pieces.Rook;
 
 public class ChessGame implements ChessController {
 
   private ChessView view;
-  private int turnNb;
-  private Board board;
+  private Engine engine;
 
   @Override
   public void start(ChessView view) {
@@ -22,30 +21,39 @@ public class ChessGame implements ChessController {
   public boolean move(int fromX, int fromY, int toX, int toY) {
     System.out.printf("TO REMOVE : from (%d, %d) to (%d, %d)%n", fromX, fromY, toX, toY);
     if(fromX == toX && fromY == toY) {
-      System.out.println("Stayed static, still the same turn");
+      System.out.println("Movement cancelled");
       return false;
     }
     if(toX < 0 || toX > 7 || toY < 0 || toY > 7) {
       System.out.println("Invalid destination position (/!\\ hard coded)");
       return false;
     }
-    Piece piece = board.getPiece();
-    if(piece.getX() == fromX && piece.getY() == fromY) {
-      System.out.println("Bonjour");
-      if(piece.move(toX, toY)) {
-        view.removePiece(fromX, fromY);
-        view.putPiece(piece.getType(), piece.getColor(), piece.getX(), piece.getY());
-        return true;
-      }
+    Piece piece = engine.getPiece(fromX, fromY);
+    if(piece == null) {
+      System.out.println("No piece found at starting position");
+      return false;
     }
+    if(!engine.checkPieceValid(piece)) {
+      System.out.println("This piece isn't from the player who's turn it is");
+      return false;
+    }
+    if(piece.move(toX, toY)) {
+      view.removePiece(fromX, fromY);
+      view.putPiece(piece.getType(), piece.getColor(), piece.getX(), piece.getY());
+      engine.nextTurn();
+      System.out.println("Move made");
+      return true;
+    }
+    System.out.println("Move not allowed");
     return false;
   }
 
   @Override
   public void newGame() {
-    board = new Board();
+    engine = new Engine();
     view.displayMessage("new game (TO REMOVE)");
-    board.setPiece(new King(PlayerColor.BLACK, 3, 4));
-    view.putPiece(board.getPiece().getType(), board.getPiece().getColor(), board.getPiece().getX(), board.getPiece().getY());
+    engine.addPiece(new King(3, 4, engine.getPlayerOne()));
+    engine.addPiece(new Rook(4, 4, engine.getPlayerTwo()));
+    engine.printPieces(view);
   }
 }
