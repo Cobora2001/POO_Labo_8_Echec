@@ -5,6 +5,11 @@ import chess.PlayerColor;
 import engine.Player;
 
 public abstract class Piece {
+    public interface Rule{
+       public boolean valid(int x, int y);
+    }
+    Ruleset ruleset;
+
     private PieceType type;
     private int x;
     private int y;
