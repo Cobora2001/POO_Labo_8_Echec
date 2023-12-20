@@ -7,8 +7,8 @@ import static java.lang.Math.abs;
 
 public class King extends Piece {
 
-    public King(int x, int y, Player player) {
-        super(PieceType.KING, x, y, player);
+    public King(int x, int y) {
+        super(PieceType.KING, x, y);
     }
 
     @Override

@@ -1,21 +1,18 @@
 package engine.Pieces;
 
+import chess.ChessView;
 import chess.PieceType;
 import chess.PlayerColor;
-import engine.Player;
 
 public abstract class Piece {
     private PieceType type;
     private int x;
     private int y;
-    private final Player player;
 
-
-    public Piece(PieceType type, int x, int y, Player player) {
+    public Piece(PieceType type, int x, int y) {
         this.type = type;
         this.x = x;
         this.y = y;
-        this.player = player;
     }
 
     public boolean move(int x, int y) {
@@ -31,10 +28,6 @@ public abstract class Piece {
         return type;
     }
 
-    public PlayerColor getColor() {
-        return getPlayer().getColor();
-    }
-
     public int getX() {
         return x;
     }
@@ -43,13 +36,17 @@ public abstract class Piece {
         return y;
     }
 
-    public abstract boolean internalRule(int x, int y);
-
-    public Player getPlayer() {
-        return player;
+    public boolean isThere(int x, int y) {
+        return this.getX() == x && this.getY() == y;
     }
+
+    public abstract boolean internalRule(int x, int y);
 
     public void changeType(PieceType type) {
         this.type = type;
+    }
+
+    public void draw(ChessView view, PlayerColor color) {
+        view.putPiece(this.getType(), color, this.getX(), this.getY());
     }
 }

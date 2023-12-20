@@ -7,8 +7,8 @@ import static java.lang.Math.abs;
 
 public class Rook extends Piece {
 
-    public Rook(int x, int y, Player player) {
-        super(PieceType.ROOK, x, y, player);
+    public Rook(int x, int y) {
+        super(PieceType.ROOK, x, y);
     }
 
     @Override

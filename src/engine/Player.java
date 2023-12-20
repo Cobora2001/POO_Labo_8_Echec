@@ -18,6 +18,7 @@ public class Player {
         this.king = king;
         this.color = color;
     }
+
     Iterator getIterator(){
         return pieces.iterator();
     }
@@ -25,12 +26,22 @@ public class Player {
     void removePiece(Piece piece){
         pieces.remove(piece);
     }
+
     void addPiece(Piece piece){
         pieces.add(piece);
     }
+
     public PlayerColor getColor() {
         return color;
     }
 
-
+    public Piece findPiece(int x, int y) {
+        for(Piece piece : pieces) {
+            if(piece.isThere(x, y))
+                return piece;
+        }
+        if(king.isThere(x, y))
+            return king;
+        return null;
+    }
 }
