@@ -24,7 +24,7 @@ public class ChessGame implements ChessController {
 
   @Override
   public void newGame() {
-    engine = new Engine();
+    engine = new Engine(view);
     view.displayMessage("new game (TO REMOVE)");
     engine.drawCurrentState(view);
   }

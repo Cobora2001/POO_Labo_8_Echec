@@ -11,8 +11,10 @@ import java.util.LinkedList;
 public class Engine {
     private final Player[] players = new Player[2];
     private int turn = 1;
+    private ChessView view;
 
-    public Engine() {
+    public Engine(ChessView view) {
+        this.view = view;
         players[0] = new Player(new King(0, 0), PlayerColor.WHITE);
         players[1] = new Player(new King(7, 7), PlayerColor.BLACK);
     }
@@ -54,27 +56,41 @@ public class Engine {
 
     public boolean move(int fromX, int fromY, int toX, int toY, ChessView view) {
         if(fromX == toX && fromY == toY) {
-            view.displayMessage("Movement cancelled");
+            displayMessage("Movement cancelled");
             return false;
         }
         if(toX < 0 || toX > 7 || toY < 0 || toY > 7) {
-            view.displayMessage("Invalid destination position (/!\\ hard coded)");
+            displayMessage("Invalid destination position (/!\\ hard coded)");
             return false;
         }
         Player playerTurn = getCurrentPlayer();
-        Piece piece = playerTurn.findPiece(fromX, fromY);
-        if(piece == null) {
-            view.displayMessage("No piece found from the " + playerTurn.getColor() + " player at starting position");
-            return false;
-        }
-        if(piece.move(toX, toY)) {
-            view.removePiece(fromX, fromY);
-            view.putPiece(piece.getType(), playerTurn.getColor(), piece.getX(), piece.getY());
-            nextTurn();
-            view.displayMessage("Move made");
-            return true;
-        }
-        view.displayMessage("Move not allowed");
-        return false;
+        return playerTurn.move(fromX, fromY, toX, toY, this);
+    }
+
+    private boolean isInLine(int fromX, int fromY, int toX, int toY) {
+        int difX = fromX - toX;
+        int difY = fromY - toY;
+        return difX == 0 || difY == 0 || difX == difY;
+    }
+
+    private LinkedList<int[]> pointsInTheWay(int fromX, int fromY, int toX, int toY) {
+        return null; // FIXME
+    }
+
+    public boolean checkObstruction(int fromX, int fromY, int toX, int toY) {
+        LinkedList<int[]> listOfPoints = pointsInTheWay(fromX, fromY, toX, toY);
+        return true;
+    }
+
+    public void displayMessage(String message) {
+        view.displayMessage(message);
+    }
+
+    public void addPieceToView(Piece piece, PlayerColor color) {
+        view.putPiece(piece.getType(), color, piece.getX(), piece.getY());
+    }
+
+    public void removeFromView(int x, int y) {
+        view.removePiece(x, y);
     }
 }

@@ -3,6 +3,7 @@ package engine.Pieces;
 import chess.ChessView;
 import chess.PieceType;
 import chess.PlayerColor;
+import engine.Engine;
 
 public abstract class Piece {
     private PieceType type;
@@ -15,8 +16,13 @@ public abstract class Piece {
         this.y = y;
     }
 
-    public boolean move(int x, int y) {
-        if(!internalRule(x, y)) {
+    public boolean move(int x, int y, Engine engine) {
+        if(!engine.checkObstruction(getX(), getY(), x, y)) {
+            engine.displayMessage("There were pieces in the way, so the movement was invalid.");
+            return false;
+        }
+        if(!internalRule(x, y, engine)) {
+            engine.displayMessage("This piece can't move like that");
             return false;
         }
         this.x = x;
@@ -40,7 +46,7 @@ public abstract class Piece {
         return this.getX() == x && this.getY() == y;
     }
 
-    public abstract boolean internalRule(int x, int y);
+    public abstract boolean internalRule(int x, int y, Engine engine);
 
     public void changeType(PieceType type) {
         this.type = type;
