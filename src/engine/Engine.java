@@ -5,16 +5,16 @@ import chess.PieceType;
 import chess.PlayerColor;
 
 import java.util.LinkedList;
-import java.util.Map.Entry;
 
 public class Engine {
     public static final int dimension = 8;
     private static final int nbPlayers = PlayerColor.values().length;
-    private ChessView view;
+    private final ChessView view;
 
     private Piece[][] matrix;
-    private Pair<Piece, LinkedList<Piece>>[] playerPieces;
-    // private LinkedList<Piece>[] playerPieces;
+    private final Pair<Piece, LinkedList<Piece>>[] playerPieces;
+
+    private Pair<Piece, Pair<Integer, Integer>> lastMove;
 
     private int turn;
 
@@ -88,42 +88,74 @@ public class Engine {
         return matrix[x][y];
     }
 
+    private PlayerColor colorPlaying() {
+        return turn % 2 == 1 ? PlayerColor.WHITE : PlayerColor.BLACK;
+    }
+
     public boolean move(int fromX, int fromY, int toX, int toY) {
         if(fromX == toX && fromY == toY) {
             displayMessage("Movement cancelled");
             return false;
         }
+
         if(toX < 0 || toX > 7 || toY < 0 || toY > 7) {
             displayMessage("Invalid destination position (/!\\ hard coded)");
             return false;
         }
+
         Piece piece = findPiece(fromX, fromY);
         if(piece == null) {
             displayMessage("No piece found at starting position");
             return false;
         }
 
+        if(piece.getColor() != colorPlaying()) {
+            displayMessage("The piece selected isn't " + colorPlaying() + ", who's turn it is.");
+            return false;
+        }
+
         Piece destination = findPiece(toX, toY);
-        // On a à ce moment-là déjà appelé de quoi savoir que la position de départ et d'arrivée sont différentes, donc
-        // les deux pièces peuvent pas être les mêmes, à moins qu'on ait plusieurs fois la même pièce sur le plateau...
+
         if(destination != null && destination.getColor() == piece.getColor()) {
             displayMessage("There was a " + destination.getColor() + " piece at the place we wanted to put our " + piece.getColor() + " piece at.");
             return false;
         }
-        String errorMessage = piece.canMove(toX, toY, matrix);
-        if(errorMessage == null) {
-            removeFromView(fromX, fromY);
-            addPieceToView(piece);
-            nextTurn();
-            displayMessage("Move made");
-            return true;
+
+        String errorMessage = piece.canMove(toX, toY, this);
+        if(errorMessage != null) {
+            displayMessage(errorMessage);
+            return false;
         }
-        displayMessage(errorMessage);
-        return false;
+
+        piece.updateMatrix(toX, toY, matrix);
+
+        if(moveWouldCheck(piece.getColor(), fromX, fromY, toX, toY)) {
+            displayMessage("Doing this move would put the " + piece.getColor() + " king at risk");
+            revertMatrix();
+            return false;
+        }
+
+        movePiece(piece, toX, toY);
+
+        return true;
+
+    }
+
+    private void revertMatrix() {
+        matrix = new Piece[dimension][dimension];
+        initiateMatrix();
     }
 
     private void addPieceToView(Piece piece) {
         view.putPiece(piece.getType(), piece.getColor(), piece.getX(), piece.getY());
+    }
+
+    private void emptyView() {
+        for(int i = 0; i < dimension; ++i) {
+            for(int j = 0; j < dimension; ++j) {
+                removeFromView(i, j);
+            }
+        }
     }
 
     private void removeFromView(int x, int y) {
@@ -132,5 +164,82 @@ public class Engine {
 
     private void nextTurn() {
         ++turn;
+    }
+
+    private void setPiecesFromMatrix(int toX, int toY) {
+        for(Pair<Piece, LinkedList<Piece>> pieces : playerPieces) {
+            pieces.setSecond(new LinkedList<>());
+            Piece king = pieces.getFirst();
+            if(king != matrix[king.getX()][king.getY()]) {
+                if(king != matrix[toX][toY]) {
+                    throw new RuntimeException("Only one king should move during a turn, at maximum.");
+                }
+                king.setX(toX);
+                king.setY(toY);
+            }
+        }
+        for(Piece[] line : matrix) {
+            for(Piece piece : line) {
+                if(piece != null) {
+                    if(piece.getType() != PieceType.KING) {
+                        for(Pair<Piece, LinkedList<Piece>> pieces: playerPieces) {
+                            if(pieces.getFirst().getColor() == piece.getColor()) {
+                                pieces.getSecond().add(piece);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void movePiece(Piece piece, int toX, int toY) {
+//        piece.move(toX, toY, this, view);
+        setPiecesFromMatrix(toX, toY);
+        nextTurn();
+        lastMove = new Pair<>(piece, new Pair<>(toX, toY));
+        emptyView();
+        initiateView();
+        displayMessage("Move made");
+    }
+
+    private Pair<Integer, Integer> findKing(PlayerColor color, int fromX, int fromY, int toX, int toY) {
+        for (Pair<Piece, LinkedList<Piece>> playerPiece : playerPieces) {
+            Piece king = playerPiece.getFirst();
+            if (king.getColor() == color) {
+                if (king.getX() == fromX && king.getY() == fromY) {
+                    return new Pair<>(toX, toY);
+                } else {
+                    return new Pair<>(king.getX(), king.getY());
+                }
+            }
+        }
+        return null;
+    }
+
+    private boolean moveWouldCheck(PlayerColor color, int fromX, int fromY, int toX, int toY) {
+        Pair<Integer, Integer> king = findKing(color, fromX, fromY, toX, toY);
+        for (Pair<Piece, LinkedList<Piece>> playerPiece : playerPieces) {
+            if (playerPiece.getFirst().getColor() != color) {
+                LinkedList<Piece> pieces = playerPiece.getSecond();
+                for (Piece piece : pieces) {
+                    // FIXME check que la pièce est bien toujours là
+                    assert king != null;
+                    String response = piece.canMove(king.getFirst(), king.getSecond(), this);
+                    if(response == null)
+                        return true;
+                }
+                // FIXME check avec le king adverse
+            }
+        }
+        return false;
+    }
+
+    public Piece[][] getMatrix() {
+        return matrix;
+    }
+
+    public Pair<Piece, Pair<Integer, Integer>> getLastMove() {
+        return lastMove;
     }
 }

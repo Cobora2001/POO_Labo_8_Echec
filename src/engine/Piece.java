@@ -1,5 +1,6 @@
 package engine;
 
+import chess.ChessView;
 import chess.PieceType;
 import chess.PlayerColor;
 
@@ -49,7 +50,15 @@ public class Piece {
         this.y = y;
     }
 
-    public String canMove(int x, int y, Piece[][] matrix) {
-        return null;
+    public String canMove(int x, int y, Engine engine) {
+        return Ruleset.availableMove(this, x, y, engine);
+    }
+
+    public void updateMatrix(int toX, int toY, Piece[][] matrix) {
+
+    }
+
+    public void move(int toX, int toY, Engine engine, ChessView view) {
+
     }
 }

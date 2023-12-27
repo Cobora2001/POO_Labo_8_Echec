@@ -3,23 +3,24 @@ package engine;
 import java.util.LinkedList;
 
 public class Ruleset {
-    static public String availableMove(int fromX, int fromY, int toX, int toY, Piece[][] matrix) {
-        if(!movePossible(fromX,  fromY, toX, toY)) {
+    static public String availableMove(Piece piece, int toX, int toY, Engine engine) {
+        Piece[][] matrix = engine.getMatrix();
+        if(!movePossible(piece, toX, toY)) {
             return "This piece can't move in such a way.";
         }
-        if(isObstructed(fromX, fromY, toX, toY, matrix)) {
+        if(isObstructed(piece, toX, toY, matrix)) {
             return "The way is obstructed.";
         }
         return null;
     }
 
-    static private boolean movePossible(int fromX, int fromY, int toX, int toY) {
+    static private boolean movePossible(Piece piece, int toX, int toY) {
         // FIXME en fonction de la pièce
         return true;
     }
 
-    static private boolean isObstructed(int fromX, int fromY, int toX, int toY, Piece[][] matrix) {
-        LinkedList<Pair<Integer, Integer>> spacesPassedThrough = getPassedPlaces(fromX, fromY, toX, toY);
+    static private boolean isObstructed(Piece piece, int toX, int toY, Piece[][] matrix) {
+        LinkedList<Pair<Integer, Integer>> spacesPassedThrough = getPassedPlaces(piece.getX(), piece.getY(), toX, toY);
         if(spacesPassedThrough == null) {
             return false;
         }
