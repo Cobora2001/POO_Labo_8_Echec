@@ -9,6 +9,8 @@ public class ChessGame implements ChessController {
 
   private ChessView view;
 
+  private Engine engine;
+
   @Override
   public void start(ChessView view) {
     this.view = view;
@@ -24,6 +26,7 @@ public class ChessGame implements ChessController {
   @Override
   public void newGame() {
     view.displayMessage("new game (TO REMOVE)"); // TODO
-    view.putPiece(PieceType.KING, PlayerColor.BLACK, 3, 4); // TODO exemple uniquement
+    this.engine = new Engine(view);
+    engine.initiateView();
   }
 }
