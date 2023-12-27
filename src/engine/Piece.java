@@ -48,4 +48,8 @@ public class Piece {
     public void setY(int y) {
         this.y = y;
     }
+
+    public String canMove(int x, int y, Piece[][] matrix) {
+        return null;
+    }
 }
