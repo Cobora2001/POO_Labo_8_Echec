@@ -2,42 +2,62 @@ package engine;
 
 import chess.ChessView;
 import chess.PlayerColor;
-import engine.Pieces.King;
 import engine.Pieces.Piece;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 
 public class Engine {
-    private final Player[] players = new Player[2];
+    private Player[] players;
+    private Board board;
     private int turn = 1;
-    private ChessView view;
+    private final ChessView view;
 
-    public Engine(ChessView view) {
+
+    public Engine(ChessView view, PlayerColor[] colorsAtPlay) {
         this.view = view;
-        players[0] = new Player(new King(0, 0), PlayerColor.WHITE);
-        players[1] = new Player(new King(7, 7), PlayerColor.BLACK);
+
+        LinkedList<PlayerColor> validColors = validColorList(colorsAtPlay);
+
+        initializePlayers(validColors);
+
+    }
+
+    // Add the color if it's not already there
+    private void manageColor(LinkedList<PlayerColor> colors, PlayerColor color) {
+        boolean flag = true;
+        int size = colors.size();
+        for(int i = 0; i < size && flag; ++i) {
+            if(color == colors.get(i)){
+                colors.add(color);
+                flag = false;
+            }
+        }
+    }
+
+    // Get unique colors at play
+    private LinkedList<PlayerColor> validColorList(PlayerColor[] colors) {
+        LinkedList<PlayerColor> validColors = new LinkedList<>();
+        for(PlayerColor color : colors) {
+            manageColor(validColors, color);
+        }
+        return validColors;
+    }
+
+    private void initializePlayers(LinkedList<PlayerColor> validColors) {
+        int size = validColors.size();
+        players = new Player[size];
+        for(int i = 0; i < size; ++i) {
+            players[i] = new Player(validColors.get(i));
+        }
     }
 
     public Piece getPiece(int x, int y) {
-        for(Player player : players) {
-            Piece piece = player.findPiece(x, y);
-            if(piece != null)
-                return piece;
-        }
-        return null;
+        return board.getCase(x, y);
     }
 
-    public Player getPlayerOne() {
-        return players[0];
-    }
-
-    public Player getPlayerTwo() {
-        return players[1];
-    }
-
-    private Player getCurrentPlayer() {
-        return turn % 2 == 1 ? getPlayerOne() : getPlayerTwo();
+    private PlayerColor getCurrentColor() {
+        return players[turn % players.length].getColor();
     }
 
     public void nextTurn() {

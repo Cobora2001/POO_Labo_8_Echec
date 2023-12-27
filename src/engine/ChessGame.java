@@ -2,9 +2,7 @@ package engine;
 
 import chess.ChessController;
 import chess.ChessView;
-import engine.Pieces.King;
-import engine.Pieces.Piece;
-import engine.Pieces.Rook;
+import chess.PlayerColor;
 
 public class ChessGame implements ChessController {
 
@@ -24,7 +22,7 @@ public class ChessGame implements ChessController {
 
   @Override
   public void newGame() {
-    engine = new Engine(view);
+    engine = new Engine(view, new PlayerColor[]{PlayerColor.WHITE, PlayerColor.BLACK});
     view.displayMessage("new game (TO REMOVE)");
     engine.drawCurrentState(view);
   }

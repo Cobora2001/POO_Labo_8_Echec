@@ -2,21 +2,21 @@ package engine;
 
 import chess.ChessView;
 import chess.PlayerColor;
+import engine.Pieces.King;
 import engine.Pieces.Piece;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 
 public class Player {
-    private final Piece king;
+    private King king;
     private final LinkedList<Piece> pieces = new LinkedList<>();
     private final PlayerColor color;
-    public Piece getKing(){
+    public King getKing(){
         return king;
     }
 
-    public Player(Piece king, PlayerColor color) {
-        this.king = king;
+    public Player(PlayerColor color) {
         this.color = color;
     }
 
