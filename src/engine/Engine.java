@@ -73,7 +73,20 @@ public class Engine {
         }
     }
 
+    private void displayMessage(String message) {
+        view.displayMessage(message);
+    }
+
     public boolean move(int fromX, int fromY, int toX, int toY) {
+        if(fromX == toX && fromY == toY) {
+            displayMessage("Movement cancelled");
+            return false;
+        }
+        if(toX < 0 || toX > 7 || toY < 0 || toY > 7) {
+            displayMessage("Invalid destination position (/!\\ hard coded)");
+            return false;
+        }
+
         return false;
     }
 }
