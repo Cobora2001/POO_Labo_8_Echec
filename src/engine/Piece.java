@@ -54,11 +54,11 @@ public class Piece {
         return Ruleset.availableMove(this, x, y, engine);
     }
 
-    public void updateMatrix(int toX, int toY, Piece[][] matrix) {
-
+    public void updateMatrix(int toX, int toY, Engine engine) {
+        Ruleset.updateMatrix(this, toX, toY, engine);
     }
 
-    public void move(int toX, int toY, Engine engine, ChessView view) {
+    public void move(int toX, int toY, Engine engine) {
 
     }
 }

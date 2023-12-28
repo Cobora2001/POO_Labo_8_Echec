@@ -22,21 +22,21 @@ public class Ruleset {
     static private boolean isObstructed(Piece piece, int toX, int toY, Piece[][] matrix) {
         LinkedList<Pair<Integer, Integer>> spacesPassedThrough = getPassedPlaces(piece.getX(), piece.getY(), toX, toY);
         if(spacesPassedThrough == null) {
-            return false;
+            return true;
         }
         for(Pair<Integer, Integer> position : spacesPassedThrough) {
             if(matrix[position.getFirst()][position.getSecond()] != null) {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     static private LinkedList<Pair<Integer, Integer>> getPassedPlaces(int fromX, int fromY, int toX, int toY) {
         int diffX = toX - fromX;
         int diffY = toY - fromY;
 
-        if(diffX == diffY) {
+        if(Math.abs(diffX) == Math.abs(diffY)) {
             if(diffX == 0) {
                 return new LinkedList<>();
             }
@@ -55,11 +55,18 @@ public class Ruleset {
         fromX += changeX;
         fromY += changeY;
 
-        for(; fromX != toX && fromY != toY;) {
+        while(!(fromX == toX && fromY == toY)) {
             response.add(new Pair<>(fromX, fromY));
             fromX += changeX;
             fromY += changeY;
         }
+
         return response;
+    }
+
+    static public void updateMatrix(Piece piece, int toX, int toY, Engine engine) {
+        // FIXME en fonction de ce dont on a besoin
+        engine.getMatrix()[piece.getX()][piece.getY()] = null;
+        engine.getMatrix()[toX][toY] = piece;
     }
 }

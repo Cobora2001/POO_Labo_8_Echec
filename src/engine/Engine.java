@@ -127,9 +127,11 @@ public class Engine {
             return false;
         }
 
-        piece.updateMatrix(toX, toY, matrix);
+        piece.updateMatrix(toX, toY, this);
 
-        if(moveWouldCheck(piece.getColor(), fromX, fromY, toX, toY)) {
+        Pair<Integer, Integer> king = findKing(piece.getColor(), fromX, fromY, toX, toY);
+        assert king != null;
+        if(moveWouldThreaten(piece.getColor(), king.getFirst(), king.getSecond())) {
             displayMessage("Doing this move would put the " + piece.getColor() + " king at risk");
             revertMatrix();
             return false;
@@ -178,13 +180,15 @@ public class Engine {
                 king.setY(toY);
             }
         }
-        for(Piece[] line : matrix) {
-            for(Piece piece : line) {
-                if(piece != null) {
-                    if(piece.getType() != PieceType.KING) {
+        for(int i = 0; i < matrix.length; ++i) {
+            for(int j = 0; j < matrix[0].length; ++j) {
+                if(matrix[i][j] != null) {
+                    if(matrix[i][j].getType() != PieceType.KING) {
                         for(Pair<Piece, LinkedList<Piece>> pieces: playerPieces) {
-                            if(pieces.getFirst().getColor() == piece.getColor()) {
-                                pieces.getSecond().add(piece);
+                            matrix[i][j].setX(i);
+                            matrix[i][j].setY(j);
+                            if(pieces.getFirst().getColor() == matrix[i][j].getColor()) {
+                                pieces.getSecond().add(matrix[i][j]);
                             }
                         }
                     }
@@ -194,7 +198,6 @@ public class Engine {
     }
 
     private void movePiece(Piece piece, int toX, int toY) {
-//        piece.move(toX, toY, this, view);
         setPiecesFromMatrix(toX, toY);
         nextTurn();
         lastMove = new Pair<>(piece, new Pair<>(toX, toY));
@@ -217,19 +220,21 @@ public class Engine {
         return null;
     }
 
-    private boolean moveWouldCheck(PlayerColor color, int fromX, int fromY, int toX, int toY) {
-        Pair<Integer, Integer> king = findKing(color, fromX, fromY, toX, toY);
+    private boolean moveWouldThreaten(PlayerColor color, int threatenX, int threatenY) {
         for (Pair<Piece, LinkedList<Piece>> playerPiece : playerPieces) {
             if (playerPiece.getFirst().getColor() != color) {
                 LinkedList<Piece> pieces = playerPiece.getSecond();
                 for (Piece piece : pieces) {
-                    // FIXME check que la pièce est bien toujours là
-                    assert king != null;
-                    String response = piece.canMove(king.getFirst(), king.getSecond(), this);
-                    if(response == null)
-                        return true;
+                    if(piece == matrix[piece.getX()][piece.getY()]) {
+                        String response = piece.canMove(threatenX, threatenY, this);
+                        if(response == null)
+                            return true;
+                    }
                 }
-                // FIXME check avec le king adverse
+                String response = playerPiece.getFirst().canMove(threatenX, threatenY, this);
+                if(response == null) {
+                    return true;
+                }
             }
         }
         return false;
