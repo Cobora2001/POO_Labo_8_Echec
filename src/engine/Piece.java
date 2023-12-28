@@ -4,27 +4,22 @@ import chess.ChessView;
 import chess.PieceType;
 import chess.PlayerColor;
 
-public class Piece {
-    private final PieceType type;
-
+abstract public class Piece {
     private int x;
     private int y;
 
     private final PlayerColor color;
 
-    private final Ruleset ruleset;
 
-    public Piece(PieceType type, int x, int y, PlayerColor color, Ruleset ruleset) {
-        this.type = type;
+
+    public Piece( int x, int y, PlayerColor color) {
         this.x = x;
         this.y = y;
         this.color = color;
-        this.ruleset = ruleset;
+
     }
 
-    public PieceType getType() {
-        return type;
-    }
+    abstract public PieceType getType();
 
     public int getX() {
         return x;
@@ -38,17 +33,12 @@ public class Piece {
         return color;
     }
 
-    public Ruleset getRuleset() {
-        return ruleset;
-    }
 
-    public void setX(int x) {
+    public void setCoordinate(int x, int y) {
         this.x = x;
-    }
-
-    public void setY(int y) {
         this.y = y;
     }
+
 
     public String canMove(int x, int y, Engine engine) {
         return Ruleset.availableMove(this, x, y, engine);
@@ -62,3 +52,4 @@ public class Piece {
 
     }
 }
+

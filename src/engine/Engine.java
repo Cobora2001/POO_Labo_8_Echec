@@ -24,7 +24,7 @@ public class Engine {
         playerPieces = new Pair[nbPlayers];
         int size = playerPieces.length;
         for(int i = 0; i < size; ++i) {
-            playerPieces[i] = new Pair<>(new Piece(PieceType.KING, 4, 0, PlayerColor.values()[i], new Ruleset()), new LinkedList<>());
+            playerPieces[i] = new Pair<>(new King( 4, 0, PlayerColor.values()[i]), new LinkedList<>());
         }
         turn = 1;
         initiateGame();
@@ -38,21 +38,21 @@ public class Engine {
 
     private void initiatePlayer(int yStart, Pair<Piece, LinkedList<Piece>> pieces) {
         Piece king = pieces.getFirst();
-        king.setY(Math.abs(yStart));
+        king.setCoordinate(king.getX(), Math.abs(yStart));
         PlayerColor color = king.getColor();
 
         LinkedList<Piece> setOfPieces = pieces.getSecond();
 
-        setOfPieces.add(new Piece(PieceType.QUEEN,  3, Math.abs(yStart), color, new Ruleset()));
-        setOfPieces.add(new Piece(PieceType.ROOK,   0, Math.abs(yStart), color, new Ruleset()));
-        setOfPieces.add(new Piece(PieceType.ROOK,   7, Math.abs(yStart), color, new Ruleset()));
-        setOfPieces.add(new Piece(PieceType.KNIGHT, 1, Math.abs(yStart), color, new Ruleset()));
-        setOfPieces.add(new Piece(PieceType.KNIGHT, 6, Math.abs(yStart), color, new Ruleset()));
-        setOfPieces.add(new Piece(PieceType.BISHOP, 2, Math.abs(yStart), color, new Ruleset()));
-        setOfPieces.add(new Piece(PieceType.BISHOP, 5, Math.abs(yStart), color, new Ruleset()));
+        setOfPieces.add(new Queen(3, Math.abs(yStart), color));
+        setOfPieces.add(new Rook(0, Math.abs(yStart), color));
+        setOfPieces.add(new Rook(  7, Math.abs(yStart), color));
+        setOfPieces.add(new Knight( 1, Math.abs(yStart), color));
+        setOfPieces.add(new Knight( 6, Math.abs(yStart), color));
+        setOfPieces.add(new Bishop( 2, Math.abs(yStart), color));
+        setOfPieces.add(new Bishop( 5, Math.abs(yStart), color));
 
         for(int i = 0; i < dimension; ++i) {
-            setOfPieces.add(new Piece(PieceType.PAWN,  i, Math.abs(yStart-1), color, new Ruleset()));
+            setOfPieces.add(new Pawn(  i, Math.abs(yStart-1), color));
         }
 
     }
@@ -176,8 +176,7 @@ public class Engine {
                 if(king != matrix[toX][toY]) {
                     throw new RuntimeException("Only one king should move during a turn, at maximum.");
                 }
-                king.setX(toX);
-                king.setY(toY);
+                king.setCoordinate(toX,toY);
             }
         }
         for(int i = 0; i < matrix.length; ++i) {
@@ -185,8 +184,7 @@ public class Engine {
                 if(matrix[i][j] != null) {
                     if(matrix[i][j].getType() != PieceType.KING) {
                         for(Pair<Piece, LinkedList<Piece>> pieces: playerPieces) {
-                            matrix[i][j].setX(i);
-                            matrix[i][j].setY(j);
+                            matrix[i][j].setCoordinate(i,j);;
                             if(pieces.getFirst().getColor() == matrix[i][j].getColor()) {
                                 pieces.getSecond().add(matrix[i][j]);
                             }
