@@ -11,6 +11,17 @@ public class Queen extends Piece {
         return PieceType.QUEEN;
     }
 
+    @Override
+    public String canMove(int x, int y, Engine engine) {
+        return ruleset.availableMove(this, x, y, engine);
+    }
+
+    @Override
+    public void updateMatrix(int toX, int toY, Engine engine) {
+        ruleset.updateMatrix(this, toX, toY, engine);
+
+    }
+
     public Queen(int x, int y, PlayerColor color) {
         super(x, y, color);
     }

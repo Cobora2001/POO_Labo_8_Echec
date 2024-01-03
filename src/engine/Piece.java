@@ -40,13 +40,13 @@ abstract public class Piece {
     }
 
 
-    public String canMove(int x, int y, Engine engine) {
-        return Ruleset.availableMove(this, x, y, engine);
-    }
+    abstract public String canMove(int x, int y, Engine engine) ;
+       // return ruleset.availableMove(this, x, y, engine);
 
-    public void updateMatrix(int toX, int toY, Engine engine) {
-        Ruleset.updateMatrix(this, toX, toY, engine);
-    }
+
+    abstract public void updateMatrix(int toX, int toY, Engine engine) ;
+       // ruleset.updateMatrix(this, toX, toY, engine);
+
 
     public void move(int toX, int toY, Engine engine) {
 
