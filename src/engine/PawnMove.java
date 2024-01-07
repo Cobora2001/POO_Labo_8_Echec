@@ -60,6 +60,11 @@ public class PawnMove extends CaresAboutObstacles {
         if(targetsEnPassant(toX, toY)) {
             engine.getMatrix()[Pawn.getEnPassant().getX()][Pawn.getEnPassant().getY()] = null;
         }
+
+        if (toY == engine.getDimension() - 1 || toY == 0){
+            engine.promotion(toX, toY);
+        }
+
     }
 
 }

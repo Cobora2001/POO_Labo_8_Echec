@@ -256,6 +256,7 @@ public class Engine {
     public Piece[][] getMatrix() {
         return matrix;
     }
+    public int getDimension(){return dimension;}
 
     private record Promotion(Piece piece) implements ChessView.UserChoice {
         @Override
