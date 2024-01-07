@@ -51,8 +51,8 @@ public class PawnMove extends CaresAboutObstacles {
                         toY == Pawn.getEnPassant().getY() - 1 : toY == Pawn.getEnPassant().getY() + 1);
     }
 
-    static public void updateMatrix(Piece piece, int toX, int toY, Engine engine) {
-        CaresAboutObstacles.updateMatrix(piece, toX, toY, engine);
+    public void updateMatrix(Piece piece, int toX, int toY, Engine engine) {
+        super.updateMatrix(piece, toX, toY, engine);
 
         if(targetsEnPassant(toX, toY)) {
             engine.getMatrix()[Pawn.getEnPassant().getX()][Pawn.getEnPassant().getY()] = null;

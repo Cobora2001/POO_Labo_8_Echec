@@ -46,7 +46,7 @@ public abstract class Ruleset {
         return response;
     }
 
-    static public void updateMatrix(Piece piece, int toX, int toY, Engine engine) {
+    public void updateMatrix(Piece piece, int toX, int toY, Engine engine) {
         // FIXME en fonction de ce dont on a besoin
         engine.getMatrix()[piece.getX()][piece.getY()] = null;
         engine.getMatrix()[toX][toY] = piece;

@@ -6,7 +6,7 @@ import chess.PlayerColor;
 public class Pawn extends PiecesWithInitialMove {
     static private Pawn enPassant;
 
-    private static Ruleset ruleset = new VerticalMove();
+    private static Ruleset ruleset = new PawnMove();
 
     public PieceType getType() {
         return PieceType.PAWN;
