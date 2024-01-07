@@ -35,4 +35,8 @@ public class Pawn extends PiecesWithInitialMove {
     static public Pawn getEnPassant() {
         return enPassant;
     }
+
+    static public void setEnPassant(Pawn pawn) {
+        enPassant = pawn;
+    }
 }

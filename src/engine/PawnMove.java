@@ -10,9 +10,9 @@ public class PawnMove extends CaresAboutObstacles {
     public boolean isObstructed(Piece piece, int toX, int toY, Piece[][] matrix) {
 
         if(piece.getX() == toX) {
-            return super.isObstructed(piece, toX, toY, matrix) && matrix[toX][toY] == null;
+            return super.isObstructed(piece, toX, toY, matrix) || matrix[toX][toY] != null;
         } else {
-            return matrix[toX][toY] != null || targetsEnPassant(toX, toY);
+            return matrix[toX][toY] == null && !targetsEnPassant(toX, toY);
         }
 
     }
@@ -40,19 +40,22 @@ public class PawnMove extends CaresAboutObstacles {
             return diffY == 1;
         } else
             return false;
-
     }
 
     static private boolean targetsEnPassant(int toX, int toY) {
 
         return Pawn.getEnPassant() != null &&
-                toX == Pawn.getEnPassant().getX() &&
+                (toX == Pawn.getEnPassant().getX() &&
                 (Pawn.getEnPassant().getColor() == PlayerColor.WHITE ?
-                        toY == Pawn.getEnPassant().getY() - 1 : toY == Pawn.getEnPassant().getY() + 1);
+                        toY == Pawn.getEnPassant().getY() - 1 : toY == Pawn.getEnPassant().getY() + 1));
     }
 
     public void updateMatrix(Piece piece, int toX, int toY, Engine engine) {
         super.updateMatrix(piece, toX, toY, engine);
+
+        if(Math.abs(toY - piece.getY()) == 2)
+            // Here, we know that it's a pawn, because it is only called from a pawn
+            Pawn.setEnPassant((Pawn)piece);
 
         if(targetsEnPassant(toX, toY)) {
             engine.getMatrix()[Pawn.getEnPassant().getX()][Pawn.getEnPassant().getY()] = null;

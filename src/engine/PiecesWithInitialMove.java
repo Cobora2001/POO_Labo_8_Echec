@@ -3,8 +3,7 @@ package engine;
 import chess.PlayerColor;
 
 public abstract class PiecesWithInitialMove extends Piece {
-    private boolean hasMoved;
-
+    private boolean hasMoved = false;
 
     public PiecesWithInitialMove(int x, int y, PlayerColor color) {
         super(x, y, color);
@@ -14,10 +13,10 @@ public abstract class PiecesWithInitialMove extends Piece {
         return hasMoved;
     }
 
-    public void setCoordinates(int x, int y) {
+    public void setCoordinate(int x, int y) {
+        if(x != this.getX() || y != this.getY())
+            setHasMoved();
         super.setCoordinate(x, y);
-        setHasMoved();
-
     }
 
     private void setHasMoved() {

@@ -93,6 +93,7 @@ public class Engine {
     }
 
     public boolean move(int fromX, int fromY, int toX, int toY) {
+        Pawn pawnEnPassant = Pawn.getEnPassant();
         if(fromX == toX && fromY == toY) {
             displayMessage("Movement cancelled");
             return false;
@@ -134,6 +135,7 @@ public class Engine {
         if(moveWouldThreaten(piece.getColor(), king.getFirst(), king.getSecond())) {
             displayMessage("Doing this move would put the " + piece.getColor() + " king at risk");
             revertMatrix();
+            Pawn.setEnPassant(pawnEnPassant);
             return false;
         }
 

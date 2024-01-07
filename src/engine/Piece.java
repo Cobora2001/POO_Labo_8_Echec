@@ -46,10 +46,5 @@ abstract public class Piece {
 
     abstract public void updateMatrix(int toX, int toY, Engine engine) ;
        // ruleset.updateMatrix(this, toX, toY, engine);
-
-
-    public void move(int toX, int toY, Engine engine) {
-
-    }
 }
 
