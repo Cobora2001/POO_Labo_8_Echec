@@ -5,7 +5,7 @@ import chess.PlayerColor;
 
 public class Knight extends Piece {
 
-    private static Ruleset ruleset = new Ruleset();
+    private static Ruleset ruleset = new LetterLMove();
 
     public PieceType getType() {
         return PieceType.KNIGHT;

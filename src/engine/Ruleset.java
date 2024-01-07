@@ -2,38 +2,19 @@ package engine;
 
 import java.util.LinkedList;
 
-public class Ruleset {
+public abstract class Ruleset {
+
      public String availableMove(Piece piece, int toX, int toY, Engine engine) { // can't be static if overridden
         Piece[][] matrix = engine.getMatrix();
         if(!movePossible(piece, toX, toY)) {
             return "This piece can't move in such a way.";
         }
-        if(isObstructed(piece, toX, toY, matrix)) {
-            return "The way is obstructed.";
-        }
         return null;
     }
 
-    public boolean movePossible(Piece piece, int toX, int toY) { // can't be static if overridden
-        // FIXME en fonction de la pièce
-        // Make it public then
-        return true;
-    }
+    abstract public boolean movePossible(Piece piece, int toX, int toY);
 
-    private boolean isObstructed(Piece piece, int toX, int toY, Piece[][] matrix) {
-        LinkedList<Pair<Integer, Integer>> spacesPassedThrough = getPassedPlaces(piece.getX(), piece.getY(), toX, toY);
-        if(spacesPassedThrough == null) {
-            return true;
-        }
-        for(Pair<Integer, Integer> position : spacesPassedThrough) {
-            if(matrix[position.getFirst()][position.getSecond()] != null) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private LinkedList<Pair<Integer, Integer>> getPassedPlaces(int fromX, int fromY, int toX, int toY) {
+     private LinkedList<Pair<Integer, Integer>> getPassedPlaces(int fromX, int fromY, int toX, int toY) {
         int diffX = toX - fromX;
         int diffY = toY - fromY;
 

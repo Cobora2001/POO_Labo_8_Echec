@@ -5,7 +5,7 @@ import chess.PlayerColor;
 
 public class Queen extends Piece {
 
-    private static Ruleset ruleset = new Ruleset();
+    private static Ruleset ruleset = new StarMove();
 
     public PieceType getType() {
         return PieceType.QUEEN;

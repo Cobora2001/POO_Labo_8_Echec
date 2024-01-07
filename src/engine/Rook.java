@@ -5,7 +5,7 @@ import chess.PlayerColor;
 
 public class Rook extends PiecesWithInitialMove {
 
-    private static Ruleset ruleset = new HorizontalAndVertical();
+    private static Ruleset ruleset = new CrossMove();
 
     public PieceType getType() {
         return PieceType.ROOK;

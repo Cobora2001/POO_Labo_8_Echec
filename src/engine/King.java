@@ -5,7 +5,7 @@ import chess.PlayerColor;
 
 public class King extends PiecesWithInitialMove {
 
-    private static Ruleset ruleset = new Ruleset();
+    private static Ruleset ruleset = new UniMove();
 
     public PieceType getType() {
         return PieceType.KING;

@@ -4,8 +4,9 @@ import chess.PieceType;
 import chess.PlayerColor;
 
 public class Pawn extends PiecesWithInitialMove {
+    static private Pawn enPassant;
 
-    private static Ruleset ruleset = new Vertical();
+    private static Ruleset ruleset = new VerticalMove();
 
     public PieceType getType() {
         return PieceType.PAWN;
@@ -27,5 +28,12 @@ public class Pawn extends PiecesWithInitialMove {
         super(x, y, color);
     }
 
+    static public void resetEnPassant() {
+        enPassant = null;
+    }
 
+    static public Pawn getEnPassant() {
+        // Pawn.getEnpassant == null
+        return enPassant;
+    }
 }
