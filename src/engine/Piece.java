@@ -5,16 +5,14 @@ import chess.PieceType;
 import chess.PlayerColor;
 
 abstract public class Piece {
-    private int x;
-    private int y;
+    private Position position;
 
     private final PlayerColor color;
 
 
 
     public Piece( int x, int y, PlayerColor color) {
-        this.x = x;
-        this.y = y;
+        this.position = new Position(x,y);
         this.color = color;
 
     }
@@ -22,11 +20,11 @@ abstract public class Piece {
     abstract public PieceType getType();
 
     public int getX() {
-        return x;
+        return this.position.getX();
     }
 
     public int getY() {
-        return y;
+        return this.position.getY();
     }
 
     public PlayerColor getColor() {
@@ -35,8 +33,7 @@ abstract public class Piece {
 
 
     public void setCoordinate(int x, int y) {
-        this.x = x;
-        this.y = y;
+        this.position.update(x,y);
     }
 
 
