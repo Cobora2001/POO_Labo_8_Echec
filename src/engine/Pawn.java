@@ -33,7 +33,6 @@ public class Pawn extends PiecesWithInitialMove {
     }
 
     static public Pawn getEnPassant() {
-        // Pawn.getEnpassant == null
         return enPassant;
     }
 }

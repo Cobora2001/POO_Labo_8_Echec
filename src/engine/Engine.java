@@ -14,7 +14,7 @@ public class Engine {
     private Piece[][] matrix;
     private final Pair<Piece, LinkedList<Piece>>[] playerPieces;
 
-    private Pair<Piece, Pair<Integer, Integer>> lastMove;
+//    private Pair<Piece, Pair<Integer, Integer>> lastMove;
 
     private int turn;
 
@@ -195,12 +195,25 @@ public class Engine {
         }
     }
 
+    private void pawnReset() {
+        Pawn enPassant = Pawn.getEnPassant();
+        if(enPassant != null && enPassant.getColor() == colorPlaying()) {
+            Pawn.resetEnPassant();
+        }
+    }
+
+    private void turnReset() {
+        // We created this function in case we had to do multiple such operations in the futur
+        pawnReset();
+    }
+
     private void movePiece(Piece piece, int toX, int toY) {
         setPiecesFromMatrix(toX, toY);
         nextTurn();
-        lastMove = new Pair<>(piece, new Pair<>(toX, toY));
+//        lastMove = new Pair<>(piece, new Pair<>(toX, toY));
         emptyView();
         initiateView();
+        turnReset();
         displayMessage("Move made");
     }
 
@@ -242,7 +255,7 @@ public class Engine {
         return matrix;
     }
 
-    public Pair<Piece, Pair<Integer, Integer>> getLastMove() {
-        return lastMove;
-    }
+//    public Pair<Piece, Pair<Integer, Integer>> getLastMove() {
+//        return lastMove;
+//    }
 }
