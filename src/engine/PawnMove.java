@@ -12,7 +12,7 @@ public class PawnMove extends CaresAboutObstacles {
         if(piece.getX() == toX) {
             return super.isObstructed(piece, toX, toY, matrix) && matrix[toX][toY] == null;
         } else {
-            return matrix[toX][toY] != null || targetsEnPassant(toX, toY);
+            return (matrix[toX][toY] == null ) || !targetsEnPassant(toX, toY);
         }
 
     }
@@ -21,7 +21,7 @@ public class PawnMove extends CaresAboutObstacles {
     public boolean movePossible(Piece piece, int toX, int toY) {
         int distance = toY - piece.getY();
 
-        if((piece.getColor() == PlayerColor.WHITE) !=  distance > 0) {
+        if((piece.getColor() == PlayerColor.WHITE) !=  distance >= 0) {
             return false;
         }
 
@@ -44,11 +44,10 @@ public class PawnMove extends CaresAboutObstacles {
     }
 
     static private boolean targetsEnPassant(int toX, int toY) {
-
         return Pawn.getEnPassant() != null &&
                 toX == Pawn.getEnPassant().getX() &&
-                (Pawn.getEnPassant().getColor() == PlayerColor.WHITE ?
-                        toY == Pawn.getEnPassant().getY() - 1 : toY == Pawn.getEnPassant().getY() + 1);
+                Pawn.getEnPassant().getColor() == PlayerColor.WHITE ?
+                        toY == Pawn.getEnPassant().getY() - 1 : toY == Pawn.getEnPassant().getY() + 1;
     }
 
     public void updateMatrix(Piece piece, int toX, int toY, Engine engine) {

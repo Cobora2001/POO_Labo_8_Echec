@@ -14,7 +14,7 @@ public abstract class PiecesWithInitialMove extends Piece {
         return hasMoved;
     }
 
-    public void setCoordinates(int x, int y) {
+    public void setCoordinate(int x, int y) {
         super.setCoordinate(x, y);
         setHasMoved();
 
