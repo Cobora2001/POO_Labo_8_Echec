@@ -257,6 +257,21 @@ public class Engine {
         return matrix;
     }
 
+    private record Promotion(Piece piece) implements ChessView.UserChoice {
+        @Override
+        public String textValue() {
+            return piece.getClass().getSimpleName();
+        }
+    }
+    
+    public void promotion(int toX, int toY){
+        matrix[toX][toY] = view.askUser("Promotion", "What is your wish?",
+                new Promotion(new Bishop(toX, toY, colorPlaying())),
+                new Promotion(new Queen(toX, toY, colorPlaying())),
+                new Promotion(new Rook(toX, toY, colorPlaying())),
+                new Promotion(new Knight(toX, toY, colorPlaying()))).piece();
+    }
+
 //    public Pair<Piece, Pair<Integer, Integer>> getLastMove() {
 //        return lastMove;
 //    }
