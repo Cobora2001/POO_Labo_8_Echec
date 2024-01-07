@@ -263,9 +263,9 @@ public class Engine {
             return piece.getClass().getSimpleName();
         }
     }
-    
+
     public void promotion(int toX, int toY){
-        matrix[toX][toY] = view.askUser("Promotion", "What is your wish?",
+        matrix[toX][toY] = view.askUser("Promotion", "What do you prefer?",
                 new Promotion(new Bishop(toX, toY, colorPlaying())),
                 new Promotion(new Queen(toX, toY, colorPlaying())),
                 new Promotion(new Rook(toX, toY, colorPlaying())),
