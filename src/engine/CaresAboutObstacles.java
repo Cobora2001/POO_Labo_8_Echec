@@ -15,7 +15,7 @@ public abstract class CaresAboutObstacles extends Ruleset{
     }
 
 
-    public boolean isObstructed(Piece piece, int toX, int toY, Piece[][] matrix) { // FIXME Mettre plus bas
+    public boolean isObstructed(Piece piece, int toX, int toY, Piece[][] matrix) {
         int fromX = piece.getX();
         int fromY = piece.getY();
 

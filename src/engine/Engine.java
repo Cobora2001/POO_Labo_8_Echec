@@ -12,9 +12,7 @@ public class Engine {
     private final ChessView view;
 
     private Piece[][] matrix;
-    private final Pair<Piece, LinkedList<Piece>>[] playerPieces;
-
-//    private Pair<Piece, Pair<Integer, Integer>> lastMove;
+    private final Pair<King, LinkedList<Piece>>[] playerPieces;
 
     private int turn;
 
@@ -36,19 +34,19 @@ public class Engine {
         initiateMatrix();
     }
 
-    private void initiatePlayer(int yStart, Pair<Piece, LinkedList<Piece>> pieces) {
-        King king = (King)pieces.getFirst();
-        king.setCoordinate(king.getX(), Math.abs(yStart));
+    private void initiatePlayer(int yStart, Pair<King, LinkedList<Piece>> pieces) {
+        King king = pieces.getFirst();
+        king.setCoordinate(4, Math.abs(yStart));
         PlayerColor color = king.getColor();
 
         LinkedList<Piece> setOfPieces = pieces.getSecond();
 
         setOfPieces.add(new Queen(3, Math.abs(yStart), color));
         Rook rook = new Rook(  0, Math.abs(yStart), color);
-        king.addCastle(rook, 2,Math.abs(yStart));
+        king.addCastle(rook);
         setOfPieces.add(rook);
         rook = new Rook(7, Math.abs(yStart), color);
-        king.addCastle(rook, 6, Math.abs(yStart));
+        king.addCastle(rook);
         setOfPieces.add(rook);
         setOfPieces.add(new Knight( 1, Math.abs(yStart), color));
         setOfPieces.add(new Knight( 6, Math.abs(yStart), color));
@@ -66,7 +64,7 @@ public class Engine {
     }
 
     private void initiateMatrix() {
-        for(Pair<Piece, LinkedList<Piece>> pieces : playerPieces) {
+        for(Pair<King, LinkedList<Piece>> pieces : playerPieces) {
             addPieceMatrix(pieces.getFirst());
             for(Piece piece : pieces.getSecond()) {
                 addPieceMatrix(piece);
@@ -75,7 +73,7 @@ public class Engine {
     }
 
     public void initiateView() {
-        for(Pair<Piece, LinkedList<Piece>> pieces : playerPieces) {
+        for(Pair<King, LinkedList<Piece>> pieces : playerPieces) {
             Piece king = pieces.getFirst();
             view.putPiece(king.getType(), king.getColor(), king.getX(), king.getY());
             for(Piece piece : pieces.getSecond()) {
@@ -143,10 +141,9 @@ public class Engine {
             return false;
         }
 
-        movePiece(piece, toX, toY);
+        movePieces(toX, toY);
 
         return true;
-
     }
 
     private void revertMatrix() {
@@ -175,7 +172,7 @@ public class Engine {
     }
 
     private void setPiecesFromMatrix(int toX, int toY) {
-        for(Pair<Piece, LinkedList<Piece>> pieces : playerPieces) {
+        for(Pair<King, LinkedList<Piece>> pieces : playerPieces) {
             pieces.setSecond(new LinkedList<>());
             Piece king = pieces.getFirst();
             if(king != matrix[king.getX()][king.getY()]) {
@@ -189,8 +186,8 @@ public class Engine {
             for(int j = 0; j < matrix[0].length; ++j) {
                 if(matrix[i][j] != null) {
                     if(matrix[i][j].getType() != PieceType.KING) {
-                        for(Pair<Piece, LinkedList<Piece>> pieces: playerPieces) {
-                            matrix[i][j].setCoordinate(i,j);;
+                        for(Pair<King, LinkedList<Piece>> pieces: playerPieces) {
+                            matrix[i][j].setCoordinate(i,j);
                             if(pieces.getFirst().getColor() == matrix[i][j].getColor()) {
                                 pieces.getSecond().add(matrix[i][j]);
                             }
@@ -209,14 +206,13 @@ public class Engine {
     }
 
     private void turnReset() {
-        // We created this function in case we had to do multiple such operations in the futur
+        // We created this function in case we had to do multiple such operations in the future
         pawnReset();
     }
 
-    private void movePiece(Piece piece, int toX, int toY) {
+    private void movePieces(int toX, int toY) {
         setPiecesFromMatrix(toX, toY);
         nextTurn();
-//        lastMove = new Pair<>(piece, new Pair<>(toX, toY));
         emptyView();
         initiateView();
         turnReset();
@@ -224,7 +220,7 @@ public class Engine {
     }
 
     private Pair<Integer, Integer> findKing(PlayerColor color, int fromX, int fromY, int toX, int toY) {
-        for (Pair<Piece, LinkedList<Piece>> playerPiece : playerPieces) {
+        for (Pair<King, LinkedList<Piece>> playerPiece : playerPieces) {
             Piece king = playerPiece.getFirst();
             if (king.getColor() == color) {
                 if (king.getX() == fromX && king.getY() == fromY) {
@@ -237,8 +233,8 @@ public class Engine {
         return null;
     }
 
-    private boolean moveWouldThreaten(PlayerColor color, int threatenX, int threatenY) {
-        for (Pair<Piece, LinkedList<Piece>> playerPiece : playerPieces) {
+    public boolean moveWouldThreaten(PlayerColor color, int threatenX, int threatenY) {
+        for (Pair<King, LinkedList<Piece>> playerPiece : playerPieces) {
             if (playerPiece.getFirst().getColor() != color) {
                 LinkedList<Piece> pieces = playerPiece.getSecond();
                 for (Piece piece : pieces) {
@@ -277,7 +273,4 @@ public class Engine {
                 new Promotion(new Knight(toX, toY, colorPlaying()))).piece();
     }
 
-//    public Pair<Piece, Pair<Integer, Integer>> getLastMove() {
-//        return lastMove;
-//    }
 }
