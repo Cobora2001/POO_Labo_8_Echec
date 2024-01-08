@@ -32,20 +32,24 @@ public class Engine {
 
     private void initiateGame() {
         initiatePlayer(0, playerPieces[0]);
-        initiatePlayer(7, playerPieces[1]);
+        initiatePlayer(dimension - 1, playerPieces[1]);
         initiateMatrix();
     }
 
     private void initiatePlayer(int yStart, Pair<Piece, LinkedList<Piece>> pieces) {
-        Piece king = pieces.getFirst();
+        King king = (King)pieces.getFirst();
         king.setCoordinate(king.getX(), Math.abs(yStart));
         PlayerColor color = king.getColor();
 
         LinkedList<Piece> setOfPieces = pieces.getSecond();
 
         setOfPieces.add(new Queen(3, Math.abs(yStart), color));
-        setOfPieces.add(new Rook(0, Math.abs(yStart), color));
-        setOfPieces.add(new Rook(  7, Math.abs(yStart), color));
+        Rook rook = new Rook(  0, Math.abs(yStart), color);
+        king.addCastle(rook, 2,Math.abs(yStart));
+        setOfPieces.add(rook);
+        rook = new Rook(7, Math.abs(yStart), color);
+        king.addCastle(rook, 6, Math.abs(yStart));
+        setOfPieces.add(rook);
         setOfPieces.add(new Knight( 1, Math.abs(yStart), color));
         setOfPieces.add(new Knight( 6, Math.abs(yStart), color));
         setOfPieces.add(new Bishop( 2, Math.abs(yStart), color));
