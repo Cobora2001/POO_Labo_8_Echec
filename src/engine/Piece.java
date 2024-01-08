@@ -39,6 +39,9 @@ abstract public class Piece {
         this.y = y;
     }
 
+    public void setY(int y) {
+        this.y = y;
+    }
 
     abstract public String canMove(int x, int y, Engine engine) ;
        // return ruleset.availableMove(this, x, y, engine);

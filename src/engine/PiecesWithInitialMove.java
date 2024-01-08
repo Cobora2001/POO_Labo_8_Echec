@@ -15,9 +15,7 @@ public abstract class PiecesWithInitialMove extends Piece {
 
     public void setCoordinate(int x, int y) {
         if(!hasMoved && x != this.getX() || y != this.getY()) {
-            System.out.println(hasMoved);
             setHasMoved();
-            System.out.println(this.getX() + " : " + this.getY());
         }
         super.setCoordinate(x, y);
     }

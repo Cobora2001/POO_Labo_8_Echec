@@ -22,7 +22,7 @@ public class Engine {
         playerPieces = new Pair[nbPlayers];
         int size = playerPieces.length;
         for(int i = 0; i < size; ++i) {
-            playerPieces[i] = new Pair<>(new King( 4, 0, PlayerColor.values()[i]), new LinkedList<>());
+            playerPieces[i] = new Pair<>(new King( 4, -1, PlayerColor.values()[i]), new LinkedList<>());
         }
         turn = 1;
         initiateGame();
@@ -36,7 +36,7 @@ public class Engine {
 
     private void initiatePlayer(int yStart, Pair<King, LinkedList<Piece>> pieces) {
         King king = pieces.getFirst();
-        king.setCoordinate(4, Math.abs(yStart));
+        king.setY(Math.abs(yStart));
         PlayerColor color = king.getColor();
 
         LinkedList<Piece> setOfPieces = pieces.getSecond();

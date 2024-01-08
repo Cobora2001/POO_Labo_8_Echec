@@ -25,21 +25,15 @@ public class KingMove extends CaresAboutObstacles {
 
     private boolean canCastle(Piece piece, int toX, int toY, Engine engine){
 
-        System.out.println(1);
-
         if(toY != piece.getY())
             return false;
 
         int diffX = toX - piece.getX();
 
-        System.out.println(2);
-
         // can't castle if vertical movement
         if (toY != piece.getY()){
             return false;
         }
-
-        System.out.println(3);
 
         // check if king has moved
         if(((King)piece).hasMoved()){
@@ -47,8 +41,6 @@ public class KingMove extends CaresAboutObstacles {
         }
 
         Iterator<Pair<Rook, Integer>> castles = ((King) piece).getCastlesIterator();
-
-        System.out.println(4);
 
         Rook rook = null;
         while(castles.hasNext() && rook == null) {
@@ -58,19 +50,13 @@ public class KingMove extends CaresAboutObstacles {
             }
         }
 
-        System.out.println(5);
-
         if(rook == null || engine.getMatrix()[rook.getX()][rook.getY()] != rook) {
             return false;
         }
 
-        System.out.println(6);
-
         if(rook.hasMoved()) {
             return false;
         }
-
-        System.out.println(7);
 
         int stepX = -1 * diffX / Math.abs(diffX);
 
@@ -84,8 +70,6 @@ public class KingMove extends CaresAboutObstacles {
             indicatorX += stepX;
         }
 
-        System.out.println(8);
-
         boolean flag = true;
 
         while(flag) {
@@ -95,8 +79,6 @@ public class KingMove extends CaresAboutObstacles {
                 indicatorX += stepX;
             else flag = false;
         }
-
-        System.out.println(9);
 
         return true;
     }
