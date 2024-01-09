@@ -73,7 +73,7 @@ public class KingMove extends CaresAboutObstacles {
         boolean flag = true;
 
         while(flag) {
-            if(engine.moveWouldThreaten(piece.getColor(), indicatorX, piece.getY()))
+            if(engine.isThreatened(piece.getColor(), indicatorX, piece.getY()))
                 return false;
             if(indicatorX != piece.getX())
                 indicatorX += stepX;

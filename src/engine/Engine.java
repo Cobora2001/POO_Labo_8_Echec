@@ -134,7 +134,7 @@ public class Engine {
 
         Pair<Integer, Integer> king = findKing(piece.getColor(), fromX, fromY, toX, toY);
         assert king != null;
-        if(moveWouldThreaten(piece.getColor(), king.getFirst(), king.getSecond())) {
+        if(isThreatened(piece.getColor(), king.getFirst(), king.getSecond())) {
             displayMessage("Doing this move would put the " + piece.getColor() + " king at risk");
             revertMatrix();
             Pawn.setEnPassant(pawnEnPassant);
@@ -143,7 +143,28 @@ public class Engine {
 
         movePieces(toX, toY);
 
+        displayGameState();
+
         return true;
+    }
+
+    private void displayGameState() {
+        String response = null;
+        PlayerColor colorPlaying = colorPlaying();
+        int x = -1 , y = -1;
+        for (Pair<King, LinkedList<Piece>> playerPiece : playerPieces) {
+            if (playerPiece.getFirst().getColor() == colorPlaying) {
+                x = playerPiece.getFirst().getX();
+                y = playerPiece.getFirst().getY();
+            }
+        }
+        if(isThreatened(colorPlaying, x, y)) {
+            response = "Check !";
+        } else {
+            response = "Move made";
+        }
+
+        displayMessage(response);
     }
 
     private void revertMatrix() {
@@ -216,7 +237,6 @@ public class Engine {
         emptyView();
         initiateView();
         turnReset();
-        displayMessage("Move made");
     }
 
     private Pair<Integer, Integer> findKing(PlayerColor color, int fromX, int fromY, int toX, int toY) {
@@ -233,7 +253,7 @@ public class Engine {
         return null;
     }
 
-    public boolean moveWouldThreaten(PlayerColor color, int threatenX, int threatenY) {
+    public boolean isThreatened(PlayerColor color, int threatenX, int threatenY) {
         for (Pair<King, LinkedList<Piece>> playerPiece : playerPieces) {
             if (playerPiece.getFirst().getColor() != color) {
                 LinkedList<Piece> pieces = playerPiece.getSecond();
