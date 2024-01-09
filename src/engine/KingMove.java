@@ -87,18 +87,20 @@ public class KingMove extends CaresAboutObstacles {
     public void updateMatrix(Piece piece, int toX, int toY, Engine engine) {
         super.updateMatrix(piece, toX, toY, engine);
 
-        Iterator<Pair<Rook, Integer>> castles = ((King)piece).getCastlesIterator();
+        if(!((King)piece).hasMoved()) {
+            Iterator<Pair<Rook, Integer>> castles = ((King) piece).getCastlesIterator();
 
-        boolean flag = true;
+            boolean flag = true;
 
-        while(castles.hasNext() && flag) {
-            Pair<Rook, Integer> castle = castles.next();
-            if(castle.getSecond() == toX) {
-                flag = false;
-                Rook rook = castle.getFirst();
-                int diffX = toX - rook.getX();
-                engine.getMatrix()[toX + diffX / Math.abs(diffX)][toY] = rook;
-                engine.getMatrix()[rook.getX()][rook.getY()] = null;
+            while (castles.hasNext() && flag) {
+                Pair<Rook, Integer> castle = castles.next();
+                if (castle.getSecond() == toX) {
+                    flag = false;
+                    Rook rook = castle.getFirst();
+                    int diffX = toX - rook.getX();
+                    engine.getMatrix()[toX + diffX / Math.abs(diffX)][toY] = rook;
+                    engine.getMatrix()[rook.getX()][rook.getY()] = null;
+                }
             }
         }
     }
