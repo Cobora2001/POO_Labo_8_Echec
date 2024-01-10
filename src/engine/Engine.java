@@ -36,7 +36,7 @@ public class Engine {
 
     private void initiatePlayer(int yStart, Pair<King, LinkedList<Piece>> pieces) {
         King king = pieces.getFirst();
-        king.setY(Math.abs(yStart));
+        king.initiatePosition(king.getX(), Math.abs(yStart));
         PlayerColor color = king.getColor();
 
         LinkedList<Piece> setOfPieces = pieces.getSecond();
@@ -98,22 +98,30 @@ public class Engine {
         Pawn pawnEnPassant = Pawn.getEnPassant();
         if(fromX == toX && fromY == toY) {
             displayMessage("Movement cancelled");
+            System.out.println(fromX + " : " + fromY + " | " + toX + " : " + toY);
+
             return false;
         }
 
         if(toX < 0 || toX > 7 || toY < 0 || toY > 7) {
             displayMessage("Invalid destination position (/!\\ hard coded)");
+            System.out.println(fromX + " : " + fromY + " | " + toX + " : " + toY);
+
             return false;
         }
 
         Piece piece = findPiece(fromX, fromY);
         if(piece == null) {
             displayMessage("No piece found at starting position");
+            System.out.println(fromX + " : " + fromY + " | " + toX + " : " + toY);
+
             return false;
         }
 
         if(piece.getColor() != colorPlaying()) {
             displayMessage("The piece selected isn't " + colorPlaying() + ", who's turn it is.");
+            System.out.println(fromX + " : " + fromY + " | " + toX + " : " + toY);
+
             return false;
         }
 
@@ -121,12 +129,15 @@ public class Engine {
 
         if(destination != null && destination.getColor() == piece.getColor()) {
             displayMessage("There was a " + destination.getColor() + " piece at the place we wanted to put our " + piece.getColor() + " piece at.");
+            System.out.println(fromX + " : " + fromY + " | " + toX + " : " + toY);
             return false;
         }
 
         String errorMessage = piece.canMove(toX, toY, this);
         if(errorMessage != null) {
             displayMessage(errorMessage);
+            System.out.println(fromX + " : " + fromY + " | " + toX + " : " + toY);
+
             return false;
         }
 
@@ -138,6 +149,7 @@ public class Engine {
             displayMessage("Doing this move would put the " + piece.getColor() + " king at risk");
             revertMatrix();
             Pawn.setEnPassant(pawnEnPassant);
+            System.out.println(fromX + " : " + fromY + " | " + toX + " : " + toY);
             return false;
         }
 
@@ -149,7 +161,7 @@ public class Engine {
     }
 
     private void displayGameState() {
-        String response = null;
+        String response;
         PlayerColor colorPlaying = colorPlaying();
         int x = -1 , y = -1;
         for (Pair<King, LinkedList<Piece>> playerPiece : playerPieces) {
@@ -159,9 +171,15 @@ public class Engine {
             }
         }
         if(isThreatened(colorPlaying, x, y)) {
-            response = "Check !";
+            if(canAnyPieceMove(colorPlaying, true))
+                response = "Check !";
+            else
+                response = "Checkmate !";
         } else {
-            response = "Move made";
+            if(canAnyPieceMove(colorPlaying, false))
+                response = "Move made";
+            else
+                response = "Stalemate !";
         }
 
         displayMessage(response);
@@ -291,6 +309,52 @@ public class Engine {
                 new Promotion(new Queen(toX, toY, colorPlaying())),
                 new Promotion(new Rook(toX, toY, colorPlaying())),
                 new Promotion(new Knight(toX, toY, colorPlaying()))).piece();
+    }
+
+    private boolean canAnyPieceMove(PlayerColor color, boolean isThreatened) {
+        for (Pair<King, LinkedList<Piece>> playerPiece : playerPieces) {
+            King king = playerPiece.getFirst();
+            if (king.getColor() == color) {
+                LinkedList<Piece> pieces = playerPiece.getSecond();
+                for (Piece piece : pieces) {
+                    if(manageImaginaryMove(piece, isThreatened ? king : null)) {
+                        return true;
+                    }
+                }
+                if(manageImaginaryMove(king, isThreatened ? king : null)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean canPieceMove(Piece piece, boolean mustUpdate) {
+        for(int x = 0; x < matrix.length; ++x) {
+            for(int y = 0; y < matrix[0].length; ++y) {
+                if(piece.canMove(x, y, this) == null) {
+                    if(mustUpdate) {
+                        piece.updateMatrix(x, y, this);
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean manageImaginaryMove(Piece piece, King kingThreatened) {
+
+        boolean mustUpdate = kingThreatened != null;
+        boolean result = canPieceMove(piece, mustUpdate);
+
+        if(mustUpdate) {
+            if(result && piece != kingThreatened) {
+                result = !isThreatened(kingThreatened.getColor(), kingThreatened.getX(), kingThreatened.getY());
+            }
+            revertMatrix();
+        }
+        return result;
     }
 
 }

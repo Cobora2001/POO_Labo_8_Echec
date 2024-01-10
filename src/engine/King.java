@@ -8,6 +8,10 @@ import java.util.LinkedList;
 
 public class King extends PiecesWithInitialMove {
 
+    public void initiatePosition(int x, int y) {
+        super.initiatePosition(x, y);
+    }
+
     private final LinkedList<Pair<Rook, Integer>> castles = new LinkedList<>();
 
 

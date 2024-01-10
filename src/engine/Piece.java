@@ -1,6 +1,5 @@
 package engine;
 
-import chess.ChessView;
 import chess.PieceType;
 import chess.PlayerColor;
 
@@ -36,10 +35,6 @@ abstract public class Piece {
 
     public void setCoordinate(int x, int y) {
         this.x = x;
-        this.y = y;
-    }
-
-    public void setY(int y) {
         this.y = y;
     }
 

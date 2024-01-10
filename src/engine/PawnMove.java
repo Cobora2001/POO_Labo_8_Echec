@@ -2,6 +2,8 @@ package engine;
 
 import chess.PlayerColor;
 
+import java.util.Arrays;
+
 public class PawnMove extends CaresAboutObstacles {
     static final int MaxStep = 2;
 
@@ -64,6 +66,8 @@ public class PawnMove extends CaresAboutObstacles {
         if (toY == engine.getDimension() - 1 || toY == 0){
             engine.promotion(toX, toY);
         }
+
+        System.out.println(engine.getMatrix()[toX][toY].getClass().getSimpleName());
 
     }
 

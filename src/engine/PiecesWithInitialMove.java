@@ -23,4 +23,9 @@ public abstract class PiecesWithInitialMove extends Piece {
     private void setHasMoved() {
         this.hasMoved = true;
     }
+
+    public void initiatePosition(int x, int y) {
+        super.setCoordinate(x, y);
+    }
+
 }
