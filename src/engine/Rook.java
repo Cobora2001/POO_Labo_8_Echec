@@ -7,7 +7,7 @@ public class Rook extends PiecesWithInitialMove {
 
     private static Ruleset ruleset = new CrossMove();
 
-    public PieceType getType() {
+    public PieceType getPieceType() {
         return PieceType.ROOK;
     }
 

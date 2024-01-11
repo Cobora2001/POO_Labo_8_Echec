@@ -7,7 +7,7 @@ public class Knight extends Piece {
 
     private static Ruleset ruleset = new LetterLMove();
 
-    public PieceType getType() {
+    public PieceType getPieceType() {
         return PieceType.KNIGHT;
     }
 

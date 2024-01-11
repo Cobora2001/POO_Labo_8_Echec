@@ -8,7 +8,7 @@ public class Pawn extends PiecesWithInitialMove {
 
     private static Ruleset ruleset = new PawnMove();
 
-    public PieceType getType() {
+    public PieceType getPieceType() {
         return PieceType.PAWN;
     }
 

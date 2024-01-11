@@ -7,7 +7,7 @@ public class Queen extends Piece {
 
     private static Ruleset ruleset = new StarMove();
 
-    public PieceType getType() {
+    public PieceType getPieceType() {
         return PieceType.QUEEN;
     }
 

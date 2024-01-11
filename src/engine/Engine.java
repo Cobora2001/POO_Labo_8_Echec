@@ -4,6 +4,7 @@ import chess.ChessView;
 import chess.PieceType;
 import chess.PlayerColor;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 
 public class Engine {
@@ -25,44 +26,38 @@ public class Engine {
         matrix = new Piece[dimension][dimension];
         playerPieces = new Pair[nbPlayers];
         int size = playerPieces.length;
-        for(int i = 0; i < size; ++i) {
-            playerPieces[i] = new Pair<>(new King( columnKing, invalidPosition, PlayerColor.values()[i]), new LinkedList<>());
-        }
         turn = 1;
         initiateGame();
     }
 
     private void initiateGame() {
-        // For two players
-        for(int i = 0; i < nbPlayers; ++i) {
-            initiatePlayer((dimension - i) % dimension, playerPieces[i]);
+
+        for(PlayerColor color : PlayerColor.values()) {
+            initiatePlayer(color);
         }
         setMatrix();
     }
 
-    private void initiatePlayer(int yStart, Pair<King, LinkedList<Piece>> pieces) {
-        King king = pieces.getFirst();
-        king.initiatePosition(king.getX(), Math.abs(yStart));
-        PlayerColor color = king.getColor();
+    private void initiatePlayer(PlayerColor color) {
+        int yStart = (dimension - color.ordinal()) % dimension;
 
-        LinkedList<Piece> setOfPieces = pieces.getSecond();
+        LinkedList<Piece> setOfPieces = new LinkedList<>(
+                Arrays.asList(new Rook(0, yStart, color),
+                              new Rook(dimension - 1, yStart, color)));
 
-        setOfPieces.add(new Queen(3, Math.abs(yStart), color));
-        Rook rook = new Rook(  0, Math.abs(yStart), color);
-        king.addCastle(rook);
-        setOfPieces.add(rook);
-        rook = new Rook(7, Math.abs(yStart), color);
-        king.addCastle(rook);
-        setOfPieces.add(rook);
-        setOfPieces.add(new Knight( 1, Math.abs(yStart), color));
-        setOfPieces.add(new Knight( 6, Math.abs(yStart), color));
-        setOfPieces.add(new Bishop( 2, Math.abs(yStart), color));
-        setOfPieces.add(new Bishop( 5, Math.abs(yStart), color));
+        King king = new King(columnKing, yStart, color, setOfPieces);
 
+        setOfPieces.add(new Queen(3, yStart, color));
+        setOfPieces.add(new Knight(1, yStart, color));
+        setOfPieces.add(new Knight(6, yStart, color));
+        setOfPieces.add(new Bishop(2, yStart, color));
+        setOfPieces.add(new Bishop(5, yStart, color));
+
+        yStart = Math.abs(yStart -1);
         for(int i = 0; i < dimension; ++i) {
-            setOfPieces.add(new Pawn(  i, Math.abs(yStart-1), color));
+            setOfPieces.add(new Pawn( i, yStart, color));
         }
-
+        playerPieces[color.ordinal()] = new Pair<>(king, setOfPieces);
     }
 
     private void addPieceMatrix(Piece piece) {
@@ -81,9 +76,9 @@ public class Engine {
     public void initiateView() {
         for(Pair<King, LinkedList<Piece>> pieces : playerPieces) {
             Piece king = pieces.getFirst();
-            view.putPiece(king.getType(), king.getColor(), king.getX(), king.getY());
+            view.putPiece(king.getPieceType(), king.getColor(), king.getX(), king.getY());
             for(Piece piece : pieces.getSecond()) {
-                view.putPiece(piece.getType(), piece.getColor(), piece.getX(), piece.getY());
+                view.putPiece(piece.getPieceType(), piece.getColor(), piece.getX(), piece.getY());
             }
         }
     }
@@ -185,7 +180,7 @@ public class Engine {
     }
 
     private void addPieceToView(Piece piece) {
-        view.putPiece(piece.getType(), piece.getColor(), piece.getX(), piece.getY());
+        view.putPiece(piece.getPieceType(), piece.getColor(), piece.getX(), piece.getY());
     }
 
     private void emptyView() {
@@ -218,7 +213,7 @@ public class Engine {
         for(int i = 0; i < matrix.length; ++i) {
             for(int j = 0; j < matrix[0].length; ++j) {
                 if(matrix[i][j] != null) {
-                    if(matrix[i][j].getType() != PieceType.KING) {
+                    if(matrix[i][j].getPieceType() != PieceType.KING) {
                         for(Pair<King, LinkedList<Piece>> pieces: playerPieces) {
                             matrix[i][j].setCoordinate(i,j);
                             if(pieces.getFirst().getColor() == matrix[i][j].getColor()) {

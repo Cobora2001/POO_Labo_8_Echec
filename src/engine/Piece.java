@@ -18,7 +18,7 @@ abstract public class Piece {
 
     }
 
-    abstract public PieceType getType();
+    abstract public PieceType getPieceType();
 
     public int getX() {
         return x;

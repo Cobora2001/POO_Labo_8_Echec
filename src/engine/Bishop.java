@@ -7,7 +7,7 @@ public class Bishop extends Piece {
 
     private static Ruleset ruleset = new DiagonalMove();
 
-    public PieceType getType() {
+    public PieceType getPieceType() {
         return PieceType.BISHOP;
     }
 

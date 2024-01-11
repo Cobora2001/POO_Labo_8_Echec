@@ -5,6 +5,9 @@ import chess.PlayerColor;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
+
+import static java.io.FileDescriptor.err;
 
 public class King extends PiecesWithInitialMove {
 
@@ -17,7 +20,7 @@ public class King extends PiecesWithInitialMove {
 
     private static Ruleset ruleset = new KingMove();
 
-    public PieceType getType() {
+    public PieceType getPieceType() {
         return PieceType.KING;
     }
 
@@ -32,16 +35,21 @@ public class King extends PiecesWithInitialMove {
 
     }
 
-    public void addCastle(Rook castle){
-        if(castle == null)
-            System.out.println("Null Rook given, can't add to castle");
-        else if(castle.getColor() != this.getColor())
-            System.out.println("Can't add to castle, Rook not of the same color");
+    private void addCastle(Piece castle){
+
+
+
+        if(castle == null  ){
+            System.err.println("Null Rook given, can't add to castle");
+        } else if (castle.getClass() != Rook.class) {
+            System.err.println("The castle piece is not a rook");
+        } else if(castle.getColor() != this.getColor())
+            System.err.println("Can't add to castle, Rook not of the same color");
         else if(castle.getY() == this.getY()) {
             int diffX = castle.getX() - this.getX();
-            castles.add(new Pair<>(castle, this.getX() + 2 * diffX / Math.abs(diffX)));
+            castles.add(new Pair<>((Rook)castle, this.getX() + 2 * diffX / Math.abs(diffX)));
         } else
-            System.out.println("Can't add to castles, Rook not on the same line");
+            System.err.println("Can't add to castles, Rook not on the same line");
     }
     public void removeCastle(Piece castle){
         for (Pair<Rook, Integer> examined : castles) {
@@ -57,7 +65,11 @@ public class King extends PiecesWithInitialMove {
         return castles.iterator();
     }
 
-    public King(int x, int y, PlayerColor color) {
+    public King(int x, int y, PlayerColor color, List<Piece> list) {
         super(x, y, color);
+        for(Piece rook : list){
+            addCastle(rook);
+        }
+
     }
 }
