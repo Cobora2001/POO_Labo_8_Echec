@@ -34,10 +34,10 @@ public class Engine {
 
     private void initiateGame() {
         // For two players
-        assert(nbPlayers == 2);
-        initiatePlayer(0, playerPieces[0]);
-        initiatePlayer(dimension - 1, playerPieces[1]);
-        initiateMatrix();
+        for(int i = 0; i < nbPlayers; ++i) {
+            initiatePlayer((dimension - i) % dimension, playerPieces[i]);
+        }
+        setMatrix();
     }
 
     private void initiatePlayer(int yStart, Pair<King, LinkedList<Piece>> pieces) {
@@ -69,7 +69,7 @@ public class Engine {
         matrix[piece.getX()][piece.getY()] = piece;
     }
 
-    private void initiateMatrix() {
+    private void setMatrix() {
         for(Pair<King, LinkedList<Piece>> pieces : playerPieces) {
             addPieceMatrix(pieces.getFirst());
             for(Piece piece : pieces.getSecond()) {
@@ -181,7 +181,7 @@ public class Engine {
 
     private void revertMatrix() {
         matrix = new Piece[dimension][dimension];
-        initiateMatrix();
+        setMatrix();
     }
 
     private void addPieceToView(Piece piece) {
