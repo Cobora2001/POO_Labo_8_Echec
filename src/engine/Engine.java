@@ -31,7 +31,6 @@ public class Engine {
     }
 
     private void initiateGame() {
-
         for(PlayerColor color : PlayerColor.values()) {
             initiatePlayer(color);
         }

@@ -36,9 +36,7 @@ public class King extends PiecesWithInitialMove {
     }
 
     private void addCastle(Piece castle){
-
-
-
+        
         if(castle == null  ){
             System.err.println("Null Rook given, can't add to castle");
         } else if (castle.getClass() != Rook.class) {
@@ -70,6 +68,5 @@ public class King extends PiecesWithInitialMove {
         for(Piece rook : list){
             addCastle(rook);
         }
-
     }
 }
