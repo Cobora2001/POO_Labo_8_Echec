@@ -13,7 +13,6 @@ public abstract class Ruleset {
 
 
     public void updateMatrix(Piece piece, int toX, int toY, Engine engine) {
-        // FIXME dans le king
         engine.getMatrix()[piece.getX()][piece.getY()] = null;
         engine.getMatrix()[toX][toY] = piece;
     }

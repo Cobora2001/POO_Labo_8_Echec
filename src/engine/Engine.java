@@ -133,8 +133,6 @@ public class Engine {
         String errorMessage = piece.canMove(toX, toY, this);
         if(errorMessage != null) {
             displayMessage(errorMessage);
-            System.out.println(fromX + " : " + fromY + " | " + toX + " : " + toY);
-
             return false;
         }
 
@@ -146,7 +144,6 @@ public class Engine {
             displayMessage("Doing this move would put the " + piece.getColor() + " king at risk");
             revertMatrix();
             Pawn.setEnPassant(pawnEnPassant);
-            System.out.println(fromX + " : " + fromY + " | " + toX + " : " + toY);
             return false;
         }
 
@@ -315,12 +312,10 @@ public class Engine {
                 LinkedList<Piece> pieces = playerPiece.getSecond();
                 for (Piece piece : pieces) {
                     if(manageImaginaryMove(piece, isThreatened ? king : null)) {
-                        System.out.println(piece.getX() + " : " + piece.getY());
                         return true;
                     }
                 }
                 if(manageImaginaryMove(king, isThreatened ? king : null)) {
-                    System.out.println(king.getX() + " : " + king.getY());
                     return true;
                 }
             }
