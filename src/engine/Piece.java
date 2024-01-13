@@ -73,7 +73,6 @@ abstract public class Piece {
      * @param y: y coordinate
      */
     abstract public String canMove(int x, int y, Engine engine) ;
-       // return ruleset.availableMove(this, x, y, engine);
 
     /**
      * Update the matrix of the engine according to the move of the piece
@@ -82,6 +81,5 @@ abstract public class Piece {
      * @param engine the engine with the matrix to update
      */
     abstract public void updateMatrix(int toX, int toY, Engine engine) ;
-       // ruleset.updateMatrix(this, toX, toY, engine);
 }
 
