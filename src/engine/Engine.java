@@ -158,13 +158,11 @@ public class Engine {
     public boolean move(int fromX, int fromY, int toX, int toY) {
 
         if(fromX == toX && fromY == toY) {
-            System.out.println(fromX + " " + fromY + " " + toX + " " + toY);
             displayMessage("Movement cancelled");
             return false;
         }
 
         if(toX < 0 || toX >= dimension || toY < 0 || toY >= dimension) {
-            System.out.println(fromX + " " + fromY + " " + toX + " " + toY);
             displayMessage("Invalid destination position");
             return false;
         }
@@ -173,15 +171,11 @@ public class Engine {
         Piece piece = findPiece(fromX, fromY);
 
         if(piece == null) {
-            System.out.println(fromX + " " + fromY + " " + toX + " " + toY);
-
             displayMessage("No piece found at starting position");
             return false;
         }
 
         if(piece.getColor() != colorPlaying()) {
-            System.out.println(fromX + " " + fromY + " " + toX + " " + toY);
-
             displayMessage("The piece selected isn't " + colorPlaying() + ", who's turn it is.");
             return false;
         }
@@ -191,8 +185,6 @@ public class Engine {
 
         // We can't move a piece to a position where there is a piece of the same color
         if(destination != null && destination.getColor() == piece.getColor()) {
-            System.out.println(fromX + " " + fromY + " " + toX + " " + toY);
-
             displayMessage("There was a " + destination.getColor() + " piece at the place we wanted to put our " + piece.getColor() + " piece at.");
             return false;
         }
@@ -201,9 +193,6 @@ public class Engine {
         String errorMessage = piece.canMove(toX, toY, this);
 
         if(errorMessage != null) {
-            System.out.println(fromX + " " + fromY + " " + toX + " " + toY);
-            System.out.println(Pawn.getEnPassant().getX() + " " + Pawn.getEnPassant().getY());
-
             displayMessage(errorMessage);
             return false;
         }
@@ -225,8 +214,6 @@ public class Engine {
             // We reset the en passant pawn, given that we didn't move, but had updated the matrix,
             // where we update en passant for Pawn
             Pawn.setEnPassant(pawnEnPassant);
-            System.out.println(fromX + " " + fromY + " " + toX + " " + toY);
-
             return false;
         }
 
