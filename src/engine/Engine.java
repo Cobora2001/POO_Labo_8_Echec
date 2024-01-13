@@ -140,11 +140,25 @@ public class Engine {
     }
 
     /**
-     * Finds the color of the player who's turn it is
+     * Finds the color of the player whose turn it is
      * @return the color of the player playing
      */
     private PlayerColor colorPlaying() {
         return turn % 2 == 1 ? PlayerColor.WHITE : PlayerColor.BLACK;
+    }
+
+    /**
+     * Checks if the destination is valid
+     * @param toX the x coordinate of the destination
+     * @param toY the y coordinate of the destination
+     * @return a string describing the error if the destination is occupied by a piece of the same color, null otherwise
+     */
+    private String checkDestination(int toX, int toY) {
+        Piece destination = findPiece(toX, toY);
+        if(destination != null && destination.getColor() == colorPlaying()) {
+            return "There was a " + destination.getColor() + " piece at the place we wanted to put our " + colorPlaying() + " piece at.";
+        }
+        return null;
     }
 
     /**
@@ -180,17 +194,15 @@ public class Engine {
             return false;
         }
 
-        // We search for a piece at the destination position
-        Piece destination = findPiece(toX, toY);
+        String errorMessage = checkDestination(toX, toY);
 
-        // We can't move a piece to a position where there is a piece of the same color
-        if(destination != null && destination.getColor() == piece.getColor()) {
-            displayMessage("There was a " + destination.getColor() + " piece at the place we wanted to put our " + piece.getColor() + " piece at.");
+        if(errorMessage != null) {
+            displayMessage(errorMessage);
             return false;
         }
 
         // We check if the piece can move to the destination
-        String errorMessage = piece.canMove(toX, toY, this);
+        errorMessage = piece.canMove(toX, toY, this);
 
         if(errorMessage != null) {
             displayMessage(errorMessage);
@@ -455,7 +467,6 @@ public class Engine {
         // We first check if a piece from the list can move
         for (Piece piece : pieces) {
             if(canPieceMove(piece, isThreatened ? king : null)) {
-                System.out.println(piece.getX() + " " + piece.getY());
                 return true;
             }
         }
@@ -473,7 +484,8 @@ public class Engine {
         for(int x = 0; x < matrix.length; ++x) {
             for(int y = 0; y < matrix[0].length; ++y) {
                 if(piece.canMove(x, y, this) == null) {
-                    potentialDestinations.add(new Pair<>(x, y));
+                    if(checkDestination(x, y) == null)
+                        potentialDestinations.add(new Pair<>(x, y));
                 }
             }
         }
