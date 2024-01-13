@@ -455,6 +455,7 @@ public class Engine {
         // We first check if a piece from the list can move
         for (Piece piece : pieces) {
             if(canPieceMove(piece, isThreatened ? king : null)) {
+                System.out.println(piece.getX() + " " + piece.getY());
                 return true;
             }
         }
@@ -507,6 +508,10 @@ public class Engine {
             // We check if the king is still threatened after the potential move
             int xKing = kingThreatened.getX();
             int yKing = kingThreatened.getY();
+            if(piece == kingThreatened) {
+                xKing = x;
+                yKing = y;
+            }
             boolean result = !isThreatened(kingThreatened.getColor(), xKing, yKing);
 
             // We revert the matrix to the previous state
