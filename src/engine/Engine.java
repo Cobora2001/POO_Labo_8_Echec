@@ -475,67 +475,41 @@ public class Engine {
     }
 
     /**
-     * Finds the potential destinations of a piece
-     * @param piece the piece to check
-     * @param potentialDestinations the list of potential destinations
-     */
-    private void potentialDest(Piece piece, LinkedList<Pair<Integer, Integer>> potentialDestinations) {
-        // We iterate through the matrix to find the positions that the piece can move to
-        for(int x = 0; x < matrix.length; ++x) {
-            for(int y = 0; y < matrix[0].length; ++y) {
-                if(piece.canMove(x, y, this) == null) {
-                    if(checkDestination(x, y) == null)
-                        potentialDestinations.add(new Pair<>(x, y));
-                }
-            }
-        }
-    }
-
-    /**
      * Checks if a piece can move
      * @param piece the piece to check
      * @param kingThreatened the king if it is threatened, null otherwise
      * @return true if the piece can move, false otherwise
      */
     private boolean canPieceMove(Piece piece, King kingThreatened) {
-
         // If the king is threatened, we must update the matrix to check that he isn't anymore after the potential move
         boolean mustUpdate = kingThreatened != null;
 
-        // We check if the piece can reach some positions
-        LinkedList<Pair<Integer, Integer>> potentialDestinations = new LinkedList<>();
-        potentialDest(piece, potentialDestinations);
-
-        // We iterate through the positions that the piece can reach
-        for(Pair<Integer, Integer> potentialDest : potentialDestinations) {
-            // If the piece can move somewhere and that the king wasn't threatened, we can return true
-            if(!mustUpdate)
-                return true;
-
-            // We update the matrix with the potential move
-            int x = potentialDest.getFirst();
-            int y = potentialDest.getSecond();
-            piece.updateMatrix(x, y, this);
-
-            // We check if the king is still threatened after the potential move
-            int xKing = kingThreatened.getX();
-            int yKing = kingThreatened.getY();
-            if(piece == kingThreatened) {
-                xKing = x;
-                yKing = y;
-            }
-            boolean result = !isThreatened(kingThreatened.getColor(), xKing, yKing);
-
-            // We revert the matrix to the previous state
-            revertMatrix();
-
-            // If the king isn't threatened after the potential move, we can return true
-            if(result) {
-                return true;
+        // We iterate through the matrix to find the positions that the piece can move to
+        for(int x = 0; x < matrix.length; ++x) {
+            for(int y = 0; y < matrix[0].length; ++y) {
+                if(piece.canMove(x, y, this) == null) {
+                    if(checkDestination(x, y) == null) {
+                        // If the king is threatened, we must update the matrix to check that he isn't anymore after the potential move
+                        if(mustUpdate) {
+                            piece.updateMatrix(x, y, this);
+                            int xKing = kingThreatened.getX();
+                            int yKing = kingThreatened.getY();
+                            if(piece == kingThreatened) {
+                                xKing = x;
+                                yKing = y;
+                            }
+                            boolean result = !isThreatened(kingThreatened.getColor(), xKing, yKing);
+                            revertMatrix();
+                            if(result) {
+                                return true;
+                            }
+                        } else {
+                            return true;
+                        }
+                    }
+                }
             }
         }
-
         return false;
     }
-
 }
