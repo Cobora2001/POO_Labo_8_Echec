@@ -10,23 +10,7 @@ import java.util.List;
 
 public class SimulationTest {
 
-    private static class Point{
-
-        private final int x;
-        private final int y;
-
-        private Point (int x, int y){
-            this.x = x;
-            this.y = y;
-        }
-
-        int x(){
-            return this.x;
-        }
-
-        int y(){
-            return this.y;
-        }
+    private record Point(int x, int y) {
     }
 
     // Games taken from chess.com
