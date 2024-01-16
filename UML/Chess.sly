@@ -4,8 +4,8 @@
     <association aggregation="NONE" direction="FIRST_TO_SECOND" id="47282" name="manipule&gt;">
       <role componentId="36033" name="" visibility="PRIVATE">
         <multiplicity>
-          <min>1</min>
-          <max>1</max>
+          <min>0</min>
+          <max>2147483647</max>
         </multiplicity>
       </role>
       <role componentId="46852" name="" visibility="PRIVATE">
@@ -18,8 +18,8 @@
     <association aggregation="NONE" direction="FIRST_TO_SECOND" id="47269" name="&lt;Affiche sur">
       <role componentId="35697" name="" visibility="PRIVATE">
         <multiplicity>
-          <min>1</min>
-          <max>1</max>
+          <min>0</min>
+          <max>2147483647</max>
         </multiplicity>
       </role>
       <role componentId="46852" name="" visibility="PRIVATE">
@@ -168,8 +168,8 @@
       </role>
       <role componentId="36033" name="" visibility="PRIVATE">
         <multiplicity>
-          <min>1</min>
-          <max>1</max>
+          <min>0</min>
+          <max>2147483647</max>
         </multiplicity>
       </role>
     </association>
@@ -643,7 +643,7 @@
       <multipliciteAssociation>
         <x>257</x>
         <y>249</y>
-        <w>8</w>
+        <w>22</w>
         <h>16</h>
       </multipliciteAssociation>
     </relationView>
@@ -1079,7 +1079,7 @@
       <multipliciteAssociation>
         <x>447</x>
         <y>349</y>
-        <w>8</w>
+        <w>22</w>
         <h>16</h>
       </multipliciteAssociation>
       <multipliciteAssociation>
@@ -1121,7 +1121,7 @@
       <multipliciteAssociation>
         <x>57</x>
         <y>375</y>
-        <w>8</w>
+        <w>22</w>
         <h>16</h>
       </multipliciteAssociation>
       <multipliciteAssociation>
