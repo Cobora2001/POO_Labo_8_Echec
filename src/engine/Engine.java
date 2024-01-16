@@ -301,13 +301,6 @@ public class Engine {
     }
 
     /**
-     * Goes to the next turn
-     */
-    private void nextTurn() {
-        ++turn;
-    }
-
-    /**
      * Sets the pieces from the matrix
      * @param toX the new x coordinate of the piece that moved
      * @param toY the new y coordinate of the piece that moved
@@ -366,7 +359,7 @@ public class Engine {
         setPiecesFromMatrix(toX, toY);
         emptyView();
         initiateView();
-        nextTurn();
+        ++turn;
         pawnReset();
     }
 
