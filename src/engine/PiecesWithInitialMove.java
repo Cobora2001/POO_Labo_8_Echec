@@ -46,5 +46,5 @@ public abstract class PiecesWithInitialMove extends Piece {
     private void setHasMoved() {
         this.hasMoved = true;
     }
-    
+
 }
