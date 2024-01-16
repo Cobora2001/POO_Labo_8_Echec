@@ -87,19 +87,7 @@ public class King extends PiecesWithInitialMove {
             System.err.println("Can't add to castles, Rook not on the same line");
     }
 
-    /**
-     * removeCastle: remove a castle from the list of castles
-     * @param castle: the castle to remove
-     */
-    public void removeCastle(Piece castle){
-        for (Pair<Rook, Integer> examined : castles) {
-            if (examined.getFirst() == castle) {
-                castles.remove(examined);
-                break;
-            }
-        }
-    }
-
+ 
     /**
      * getCastlesIterator: get the iterator of the list of castles
      * @return the iterator of the list of castles
