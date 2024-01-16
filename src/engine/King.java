@@ -33,16 +33,7 @@ public class King extends PiecesWithInitialMove {
         }
     }
 
-    /**
-     * initiatePosition: initiate the position of the king
-     * @param x: the x coordinate of the king
-     * @param y: the y coordinate of the king
-     */
-    public void initiatePosition(int x, int y) {
-        super.initiatePosition(x, y);
-    }
-
-
+    
     /**
      * getPieceType: get the type of the piece
      * @return the type of the piece
@@ -95,18 +86,6 @@ public class King extends PiecesWithInitialMove {
             System.err.println("Can't add to castles, Rook not on the same line");
     }
 
-    /**
-     * removeCastle: remove a castle from the list of castles
-     * @param castle: the castle to remove
-     */
-    public void removeCastle(Piece castle){
-        for (Pair<Rook, Integer> examined : castles) {
-            if (examined.getFirst() == castle) {
-                castles.remove(examined);
-                break;
-            }
-        }
-    }
 
     /**
      * getCastlesIterator: get the iterator of the list of castles
