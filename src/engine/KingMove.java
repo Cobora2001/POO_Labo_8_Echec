@@ -95,9 +95,9 @@ public class KingMove extends CaresAboutObstacles {
         int indicatorX = rook.getX();
         indicatorX += stepX;
 
-        // check if the path is obstructed up to the king from the rook
+        // check if the path is obstructed up to the future position of the king from the rook
         // (the obstruction for the king is checked in moveAvailable)
-        while(indicatorX != piece.getX()) {
+        while(indicatorX != toX) {
             if(engine.getMatrix()[indicatorX][piece.getY()] != null)
                 return false;
             indicatorX += stepX;

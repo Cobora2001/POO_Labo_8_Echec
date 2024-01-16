@@ -47,12 +47,4 @@ public abstract class PiecesWithInitialMove extends Piece {
         this.hasMoved = true;
     }
 
-    /**
-     * Initiates the position of the piece, doesn't set hasMoved to true
-     * @param x x coordinate of the piece
-     * @param y y coordinate of the piece
-     */
-    public void initiatePosition(int x, int y) {
-        super.setCoordinate(x, y);
-    }
 }

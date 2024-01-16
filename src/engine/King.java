@@ -33,8 +33,7 @@ public class King extends PiecesWithInitialMove {
         }
     }
 
-
-
+    
     /**
      * getPieceType: get the type of the piece
      * @return the type of the piece
@@ -87,7 +86,7 @@ public class King extends PiecesWithInitialMove {
             System.err.println("Can't add to castles, Rook not on the same line");
     }
 
- 
+
     /**
      * getCastlesIterator: get the iterator of the list of castles
      * @return the iterator of the list of castles

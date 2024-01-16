@@ -140,11 +140,25 @@ public class Engine {
     }
 
     /**
-     * Finds the color of the player who's turn it is
+     * Finds the color of the player whose turn it is
      * @return the color of the player playing
      */
     private PlayerColor colorPlaying() {
         return turn % 2 == 1 ? PlayerColor.WHITE : PlayerColor.BLACK;
+    }
+
+    /**
+     * Checks if the destination is valid
+     * @param toX the x coordinate of the destination
+     * @param toY the y coordinate of the destination
+     * @return a string describing the error if the destination is occupied by a piece of the same color, null otherwise
+     */
+    private String checkDestination(int toX, int toY) {
+        Piece destination = findPiece(toX, toY);
+        if(destination != null && destination.getColor() == colorPlaying()) {
+            return "There was a " + destination.getColor() + " piece at the place we wanted to put our " + colorPlaying() + " piece at.";
+        }
+        return null;
     }
 
     /**
@@ -180,17 +194,15 @@ public class Engine {
             return false;
         }
 
-        // We search for a piece at the destination position
-        Piece destination = findPiece(toX, toY);
+        String errorMessage = checkDestination(toX, toY);
 
-        // We can't move a piece to a position where there is a piece of the same color
-        if(destination != null && destination.getColor() == piece.getColor()) {
-            displayMessage("There was a " + destination.getColor() + " piece at the place we wanted to put our " + piece.getColor() + " piece at.");
+        if(errorMessage != null) {
+            displayMessage(errorMessage);
             return false;
         }
 
         // We check if the piece can move to the destination
-        String errorMessage = piece.canMove(toX, toY, this);
+        errorMessage = piece.canMove(toX, toY, this);
 
         if(errorMessage != null) {
             displayMessage(errorMessage);
@@ -289,13 +301,6 @@ public class Engine {
     }
 
     /**
-     * Goes to the next turn
-     */
-    private void nextTurn() {
-        ++turn;
-    }
-
-    /**
      * Sets the pieces from the matrix
      * @param toX the new x coordinate of the piece that moved
      * @param toY the new y coordinate of the piece that moved
@@ -354,7 +359,7 @@ public class Engine {
         setPiecesFromMatrix(toX, toY);
         emptyView();
         initiateView();
-        nextTurn();
+        ++turn;
         pawnReset();
     }
 
@@ -455,28 +460,11 @@ public class Engine {
         // We first check if a piece from the list can move
         for (Piece piece : pieces) {
             if(canPieceMove(piece, isThreatened ? king : null)) {
-                System.out.println(piece.getX() + " " + piece.getY());
                 return true;
             }
         }
         // If not, we check if the king can move
         return canPieceMove(king, isThreatened ? king : null);
-    }
-
-    /**
-     * Finds the potential destinations of a piece
-     * @param piece the piece to check
-     * @param potentialDestinations the list of potential destinations
-     */
-    private void potentialDest(Piece piece, LinkedList<Pair<Integer, Integer>> potentialDestinations) {
-        // We iterate through the matrix to find the positions that the piece can move to
-        for(int x = 0; x < matrix.length; ++x) {
-            for(int y = 0; y < matrix[0].length; ++y) {
-                if(piece.canMove(x, y, this) == null) {
-                    potentialDestinations.add(new Pair<>(x, y));
-                }
-            }
-        }
     }
 
     /**
@@ -486,44 +474,35 @@ public class Engine {
      * @return true if the piece can move, false otherwise
      */
     private boolean canPieceMove(Piece piece, King kingThreatened) {
-
         // If the king is threatened, we must update the matrix to check that he isn't anymore after the potential move
         boolean mustUpdate = kingThreatened != null;
 
-        // We check if the piece can reach some positions
-        LinkedList<Pair<Integer, Integer>> potentialDestinations = new LinkedList<>();
-        potentialDest(piece, potentialDestinations);
-
-        // We iterate through the positions that the piece can reach
-        for(Pair<Integer, Integer> potentialDest : potentialDestinations) {
-            // If the piece can move somewhere and that the king wasn't threatened, we can return true
-            if(!mustUpdate)
-                return true;
-
-            // We update the matrix with the potential move
-            int x = potentialDest.getFirst();
-            int y = potentialDest.getSecond();
-            piece.updateMatrix(x, y, this);
-
-            // We check if the king is still threatened after the potential move
-            int xKing = kingThreatened.getX();
-            int yKing = kingThreatened.getY();
-            if(piece == kingThreatened) {
-                xKing = x;
-                yKing = y;
-            }
-            boolean result = !isThreatened(kingThreatened.getColor(), xKing, yKing);
-
-            // We revert the matrix to the previous state
-            revertMatrix();
-
-            // If the king isn't threatened after the potential move, we can return true
-            if(result) {
-                return true;
+        // We iterate through the matrix to find the positions that the piece can move to
+        for(int x = 0; x < matrix.length; ++x) {
+            for(int y = 0; y < matrix[0].length; ++y) {
+                if(piece.canMove(x, y, this) == null) {
+                    if(checkDestination(x, y) == null) {
+                        // If the king is threatened, we must update the matrix to check that he isn't anymore after the potential move
+                        if(mustUpdate) {
+                            piece.updateMatrix(x, y, this);
+                            int xKing = kingThreatened.getX();
+                            int yKing = kingThreatened.getY();
+                            if(piece == kingThreatened) {
+                                xKing = x;
+                                yKing = y;
+                            }
+                            boolean result = !isThreatened(kingThreatened.getColor(), xKing, yKing);
+                            revertMatrix();
+                            if(result) {
+                                return true;
+                            }
+                        } else {
+                            return true;
+                        }
+                    }
+                }
             }
         }
-
         return false;
     }
-
 }

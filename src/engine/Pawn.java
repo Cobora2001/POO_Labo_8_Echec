@@ -13,6 +13,16 @@ public class Pawn extends PiecesWithInitialMove {
     private static final Ruleset ruleset = new PawnMove();
 
     /**
+     * Constructor
+     * @param x the x coordinate of the piece
+     * @param y the y coordinate of the piece
+     * @param color the color of the piece
+     */
+    public Pawn(int x, int y, PlayerColor color) {
+        super(x, y, color);
+    }
+
+    /**
      * @return the type of the piece
      */
     @Override
@@ -43,16 +53,6 @@ public class Pawn extends PiecesWithInitialMove {
     public void updateMatrix(int toX, int toY, Engine engine) {
         ruleset.updateMatrix(this, toX, toY, engine);
 
-    }
-
-    /**
-     * Constructor
-     * @param x the x coordinate of the piece
-     * @param y the y coordinate of the piece
-     * @param color the color of the piece
-     */
-    public Pawn(int x, int y, PlayerColor color) {
-        super(x, y, color);
     }
 
     /**
