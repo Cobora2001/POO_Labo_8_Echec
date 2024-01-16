@@ -33,14 +33,6 @@ public class King extends PiecesWithInitialMove {
         }
     }
 
-    /**
-     * initiatePosition: initiate the position of the king
-     * @param x: the x coordinate of the king
-     * @param y: the y coordinate of the king
-     */
-    public void initiatePosition(int x, int y) {
-        super.initiatePosition(x, y);
-    }
 
 
     /**
