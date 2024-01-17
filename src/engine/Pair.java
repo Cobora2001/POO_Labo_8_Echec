@@ -1,3 +1,9 @@
+/**
+ * A generic pair class.
+ * @param <A> The type of the first element.
+ * @param <B> The type of the second element.
+ */
+
 package engine;
 
 public class Pair<A, B> {
