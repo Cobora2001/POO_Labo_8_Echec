@@ -1,12 +1,13 @@
-/**
- * Piece: abstract class for all pieces
- */
+// Authors: Thomas Vuilleumier, Aurélien Richard, and Stéphane Nascimento Santos
 
 package engine;
 
 import chess.PieceType;
 import chess.PlayerColor;
 
+/**
+ * Piece: abstract class for all pieces
+ */
 abstract public class Piece {
     // coordinates of the piece
     private int x;

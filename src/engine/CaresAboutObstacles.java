@@ -1,10 +1,11 @@
+// Authors: Thomas Vuilleumier, Aurélien Richard, and Stéphane Nascimento Santos
+
+package engine;
+
 /**
  * CaresAboutObstacles.java: represents a ruleset that cares about
  * obstacles in the matrix of the engine
  */
-
-package engine;
-
 public abstract class CaresAboutObstacles extends Ruleset{
     /**
      * Check if the piece can move to the given position

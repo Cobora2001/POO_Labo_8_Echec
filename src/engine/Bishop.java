@@ -1,12 +1,13 @@
-/**
- * Bishop class: a class that represents a bishop piece
- */
+// Authors: Thomas Vuilleumier, Aurélien Richard, and Stéphane Nascimento Santos
 
 package engine;
 
 import chess.PieceType;
 import chess.PlayerColor;
 
+/**
+ * Bishop class: a class that represents a bishop piece
+ */
 public class Bishop extends Piece {
     // The ruleset for the bishop
     private static final Ruleset ruleset = new DiagonalMove();
