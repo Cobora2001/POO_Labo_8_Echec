@@ -1,8 +1,5 @@
-/**
- * Engine class
- * This class is the main class of the engine package.
- * It contains the matrix of the game, the pieces of the game, and the methods to move the pieces, among others.
- */
+// Authors: Thomas Vuilleumier, Aurélien Richard, and Stéphane Nascimento Santos
+
 package engine;
 
 // import from custom classes
@@ -13,6 +10,11 @@ import chess.PlayerColor;
 import java.util.Arrays;
 import java.util.LinkedList;
 
+/**
+ * Engine class
+ * This class is the main class of the engine package.
+ * It contains the matrix of the game, the pieces of the game, and the methods to move the pieces, among others.
+ */
 public class Engine {
     public static final int dimension = 8;
     private static final int nbPlayers = PlayerColor.values().length;

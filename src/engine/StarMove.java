@@ -1,9 +1,10 @@
-/**
- * StarMove.java: This class is used to check if a move is possible in a star shape.
- */
+// Authors: Thomas Vuilleumier, Aurélien Richard, and Stéphane Nascimento Santos
 
 package engine;
 
+/**
+ * StarMove.java: This class is used to check if a move is possible in a star shape.
+ */
 public class StarMove extends CaresAboutObstacles {
     static private final Ruleset cross = new CrossMove();
     static private final Ruleset diagonal = new DiagonalMove();

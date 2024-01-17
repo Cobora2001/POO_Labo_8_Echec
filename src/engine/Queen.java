@@ -1,12 +1,13 @@
-/**
- * Queen class: contains the rules for the queen piece
- */
+// Authors: Thomas Vuilleumier, Aurélien Richard, and Stéphane Nascimento Santos
 
 package engine;
 
 import chess.PieceType;
 import chess.PlayerColor;
 
+/**
+ * Queen class: contains the rules for the queen piece
+ */
 public class Queen extends Piece {
     // The ruleset for the queen piece
     private static final Ruleset ruleset = new StarMove();

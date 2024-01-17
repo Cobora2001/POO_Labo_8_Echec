@@ -1,9 +1,10 @@
-/**
- * DiagonalMove.java: class describing the diagonal move of a piece
- */
+// Authors: Thomas Vuilleumier, Aurélien Richard, and Stéphane Nascimento Santos
 
 package engine;
 
+/**
+ * DiagonalMove.java: class describing the diagonal move of a piece
+ */
 public class DiagonalMove extends CaresAboutObstacles {
     /**
      * Tests if the move is possible, without taking into account the other pieces

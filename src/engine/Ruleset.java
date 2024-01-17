@@ -1,9 +1,10 @@
-/**
- * Ruleset is an abstract class that defines the rules for the movement of a piece.
- */
+// Authors: Thomas Vuilleumier, Aurélien Richard, and Stéphane Nascimento Santos
 
 package engine;
 
+/**
+ * Ruleset is an abstract class that defines the rules for the movement of a piece.
+ */
 public abstract class Ruleset {
 
     /**
