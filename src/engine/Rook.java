@@ -1,12 +1,13 @@
-/**
- * Rook class: represents a rook piece in chess
- */
+// Authors: Thomas Vuilleumier, Aurélien Richard, and Stéphane Nascimento Santos
 
 package engine;
 
 import chess.PieceType;
 import chess.PlayerColor;
 
+/**
+ * Rook class: represents a rook piece in chess
+ */
 public class Rook extends PiecesWithInitialMove {
     // The ruleset for the rook
     private static final Ruleset ruleset = new CrossMove();

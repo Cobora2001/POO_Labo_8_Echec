@@ -1,12 +1,13 @@
-/**
- * Knight.java: Class containing the logic of the knight piece
- */
+// Authors: Thomas Vuilleumier, Aurélien Richard, and Stéphane Nascimento Santos
 
 package engine;
 
 import chess.PieceType;
 import chess.PlayerColor;
 
+/**
+ * Knight.java: Class containing the logic of the knight piece
+ */
 public class Knight extends Piece {
     // The ruleset for the knight
     private static final Ruleset ruleset = new LetterLMove();

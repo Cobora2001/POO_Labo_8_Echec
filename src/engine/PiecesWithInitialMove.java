@@ -1,11 +1,12 @@
-/**
- * PiecesWithInitialMove.java: Abstract class for pieces that have an initial move (i.e. rook, king, pawn)
- */
+// Authors: Thomas Vuilleumier, Aurélien Richard, and Stéphane Nascimento Santos
 
 package engine;
 
 import chess.PlayerColor;
 
+/**
+ * PiecesWithInitialMove.java: Abstract class for pieces that have an initial move (i.e. rook, king, pawn)
+ */
 public abstract class PiecesWithInitialMove extends Piece {
     // True if the piece has moved already, false otherwise
     private boolean hasMoved = false;

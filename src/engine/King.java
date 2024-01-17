@@ -1,6 +1,4 @@
-/**
- * King class: represents a king piece
- */
+// Authors: Thomas Vuilleumier, Aurélien Richard, and Stéphane Nascimento Santos
 
 package engine;
 
@@ -11,6 +9,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * King class: represents a king piece
+ */
 public class King extends PiecesWithInitialMove {
     // The list of castles the king can do (rook, x coordinate of the king after the castle)
     // We never remove a castle from this list, given that we don't want to take the time to analyse

@@ -1,11 +1,12 @@
-/**
- * KingMove class: This class is responsible for the movement of the king piece.
- */
+// Authors: Thomas Vuilleumier, Aurélien Richard, and Stéphane Nascimento Santos
 
 package engine;
 
 import java.util.Iterator;
 
+/**
+ * KingMove class: This class is responsible for the movement of the king piece.
+ */
 public class KingMove extends CaresAboutObstacles {
 
     /**

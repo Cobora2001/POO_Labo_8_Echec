@@ -1,12 +1,13 @@
-/**
- * ChessGame.java: manage the chess game
- */
+// Authors: Thomas Vuilleumier, Aurélien Richard, and Stéphane Nascimento Santos
 
 package engine;
 
 import chess.ChessController;
 import chess.ChessView;
 
+/**
+ * ChessGame.java: manage the chess game
+ */
 public class ChessGame implements ChessController {
   // The view that will be used to display the game
   private ChessView view;

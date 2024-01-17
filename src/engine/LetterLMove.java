@@ -1,9 +1,10 @@
-/**
- * LetterLMove.java: Class containing the rules for the LetterLMove
- */
+// Authors: Thomas Vuilleumier, Aurélien Richard, and Stéphane Nascimento Santos
 
 package engine;
 
+/**
+ * LetterLMove.java: Class containing the rules for the LetterLMove
+ */
 public class LetterLMove extends Ruleset {
     /**
      * Checks if the move is possible for the piece, without taking into account the other pieces

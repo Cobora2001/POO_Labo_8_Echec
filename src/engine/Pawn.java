@@ -1,12 +1,13 @@
-/**
- * Pawn class: represents a pawn piece
- */
+// Authors: Thomas Vuilleumier, Aurélien Richard, and Stéphane Nascimento Santos
 
 package engine;
 
 import chess.PieceType;
 import chess.PlayerColor;
 
+/**
+ * Pawn class: represents a pawn piece
+ */
 public class Pawn extends PiecesWithInitialMove {
     // Will be the pawn that has moved two squares in the last turn, if any
     static private Pawn enPassant;

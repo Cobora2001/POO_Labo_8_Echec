@@ -1,11 +1,12 @@
-/**
- * PawnMove.java: Class to handle the movement of a pawn
- */
+// Authors: Thomas Vuilleumier, Aurélien Richard, and Stéphane Nascimento Santos
 
 package engine;
 
 import chess.PlayerColor;
 
+/**
+ * PawnMove.java: Class to handle the movement of a pawn
+ */
 public class PawnMove extends CaresAboutObstacles {
     // Constants
     static final int MaxStep = 2;

@@ -1,9 +1,10 @@
-/**
- * CrossMove.java: a class implementing a cross move
- */
+// Authors: Thomas Vuilleumier, Aurélien Richard, and Stéphane Nascimento Santos
 
 package engine;
 
+/**
+ * CrossMove.java: a class implementing a cross move
+ */
 public class CrossMove extends CaresAboutObstacles {
     /**
      * Tests if a move is possible without taking into account the other pieces on the board
